@@ -15,16 +15,22 @@ async function tgApi(method, data) {
     return r.json();
 }
 
-async function sendMessage(chatId, text, keyboard = null, parseMode = "Markdown") {
-    const msg = { chat_id: chatId, text, parse_mode: parseMode };
+async function sendMessage(chatId, text, keyboard = null, parseMode = null) {
+    const msg = { chat_id: chatId, text };
     if (keyboard) msg.reply_markup = JSON.stringify({ inline_keyboard: keyboard });
     return tgApi("sendMessage", msg);
 }
 
-async function editMessage(chatId, messageId, text, keyboard = null, parseMode = "Markdown") {
-    const msg = { chat_id: chatId, message_id: messageId, text, parse_mode: parseMode };
+async function editMessage(chatId, messageId, text, keyboard = null, parseMode = null) {
+    let msg = { chat_id: chatId, message_id: messageId, text };
     if (keyboard) msg.reply_markup = JSON.stringify({ inline_keyboard: keyboard });
-    return tgApi("editMessageText", msg);
+    let result = await tgApi("editMessageText", msg);
+    if (!result.ok) {
+        msg = { chat_id: chatId, message_id: messageId, text: text.replace(/[*_`\[\]()~>#+=|{}.!-]/g, '') };
+        if (keyboard) msg.reply_markup = JSON.stringify({ inline_keyboard: keyboard });
+        result = await tgApi("editMessageText", msg);
+    }
+    return result;
 }
 
 async function answerCallback(queryId, text = "") {
@@ -86,7 +92,7 @@ function mainMenu(userId) {
     return kb;
 }
 
-const WELCOME = "⚡ *خوش آمدید به ربات SRRoot Panel* ⚡\n\n🛠 مدیریت و ساخت پنل‌های حرفه‌ای روی کلودفلر\n📢 کانال: @SR_Panel\n🔥 روزانه ۱۰ الی ۱۰۰ گیگ کانفیگ رایگان\n\nاز منوی زیر عملیات مورد نظر را انتخاب کنید:";
+const WELCOME = "⚡ *خوش آمدید به ربات SRRoot Panel* ⚡\n\n🛠 مدیریت و ساخت پنل‌های حرفه‌ای روی کلودفلر\n📢 کانال: @SR\_Panel\n🔥 روزانه ۱۰ الی ۱۰۰ گیگ کانفیگ رایگان\n\nاز منوی زیر عملیات مورد نظر را انتخاب کنید:";
 
 // ========== Handlers ==========
 async function handleStart(chatId, userId, kv) {
@@ -187,7 +193,7 @@ async function handleCallback(query, kv) {
                 devSub = newSub;
             }
 
-            await tgApi("editMessageText", { chat_id: chatId, message_id: statusMsg.result.message_id, text: "⏳ *در حال ساخت پنل...*\n\n۱. ✅ بررسی توکن\n۲. ⏳ ایجاد دیتابیس D1\n۳. ⬜ دریافت سورس\n۴. ⬜ دیپلوی ورکر\n۵. ⬜ فعال‌سازی لینک", parse_mode: "Markdown" });
+            await tgApi("editMessageText", { chat_id: chatId, message_id: statusMsg.result.message_id, text: "⏳ *در حال ساخت پنل...*\n\n۱. ✅ بررسی توکن\n۲. ⏳ ایجاد دیتابیس D1\n۳. ⬜ دریافت سورس\n۴. ⬜ دیپلوی ورکر\n۵. ⬜ فعال‌سازی لینک",  });
 
             // Step 3: Create D1
             const suffix = genSuffix();
@@ -201,7 +207,7 @@ async function handleCallback(query, kv) {
 
             await new Promise(r => setTimeout(r, 1000));
 
-            await tgApi("editMessageText", { chat_id: chatId, message_id: statusMsg.result.message_id, text: "⏳ *در حال ساخت پنل...*\n\n۱. ✅ بررسی توکن\n۲. ✅ ایجاد دیتابیس D1\n۳. ⏳ دریافت سورس\n۴. ⬜ دیپلوی ورکر\n۵. ⬜ فعال‌سازی لینک", parse_mode: "Markdown" });
+            await tgApi("editMessageText", { chat_id: chatId, message_id: statusMsg.result.message_id, text: "⏳ *در حال ساخت پنل...*\n\n۱. ✅ بررسی توکن\n۲. ✅ ایجاد دیتابیس D1\n۳. ⏳ دریافت سورس\n۴. ⬜ دیپلوی ورکر\n۵. ⬜ فعال‌سازی لینک",  });
 
             // Step 4: Get source
             const code = await getSourceCode();
@@ -239,7 +245,7 @@ async function handleCallback(query, kv) {
                 return;
             }
 
-            await tgApi("editMessageText", { chat_id: chatId, message_id: statusMsg.result.message_id, text: "⏳ *در حال ساخت پنل...*\n\n۱. ✅ بررسی توکن\n۲. ✅ ایجاد D1\n۳. ✅ دریافت سورس\n۴. ✅ دیپلوی ورکر\n۵. ⏳ فعال‌سازی لینک", parse_mode: "Markdown" });
+            await tgApi("editMessageText", { chat_id: chatId, message_id: statusMsg.result.message_id, text: "⏳ *در حال ساخت پنل...*\n\n۱. ✅ بررسی توکن\n۲. ✅ ایجاد D1\n۳. ✅ دریافت سورس\n۴. ✅ دیپلوی ورکر\n۵. ⏳ فعال‌سازی لینک",  });
 
             // Step 6: Enable subdomain
             await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/scripts/${workerName}/subdomain`, {
@@ -264,7 +270,6 @@ async function handleCallback(query, kv) {
             await tgApi("editMessageText", {
                 chat_id: chatId, message_id: statusMsg.result.message_id,
                 text: `✅ *پنل با موفقیت ساخته شد!*\n\n📛 نام: \`${workerName}\`\n🔗 لینک:\n\`${finalUrl}\`\n\n⏰ ۵ دقیقه صبر کنید سپس وارد شوید.\n🔒 رمز عبور را در اولین ورود تنظیم کنید.`,
-                parse_mode: "Markdown",
                 reply_markup: JSON.stringify({ inline_keyboard: kb }),
             });
 
