@@ -54,7 +54,7 @@ export default {
                 }
                 const dbUuid = dbData.result.uuid;
                 await new Promise((resolve) => setTimeout(resolve, 1000));
-                const githubRes = await fetch("https://raw.githubusercontent.com/SRRoot/SRRoot-Panel/refs/heads/main/srroot.js?t=" + Date.now());
+                const githubRes = await fetch("https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/refs/heads/main/srroot.js?t=" + Date.now());
                 if (!githubRes.ok) throw new Error("خطا در دریافت سورس از گیت‌هاب.");
                 const srrootCode = await githubRes.text();
                 const metadata = {
@@ -126,7 +126,7 @@ export default {
                 }
                 let latestVersion = "Unknown";
                 try {
-                    const ghRes = await fetch("https://raw.githubusercontent.com/SRRoot/SRRoot-Panel/main/srroot.js?t=" + Date.now());
+                    const ghRes = await fetch("https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/srroot.js?t=" + Date.now());
                     if (ghRes.ok) {
                         const ghText = await ghRes.text();
                         const match = ghText.match(/CURRENT_VERSION\s*=\s*['"]([0-9\.]+)['"]/i);
@@ -181,7 +181,7 @@ export default {
                     throw new Error("Account not found");
                 }
                 const accountId = accData.result[0].id;
-                const githubRes = await fetch("https://raw.githubusercontent.com/SRRoot/SRRoot-Panel/refs/heads/main/srroot.js?t=" + Date.now());
+                const githubRes = await fetch("https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/refs/heads/main/srroot.js?t=" + Date.now());
                 if (!githubRes.ok) throw new Error("Failed to fetch source from GitHub");
                 const newCode = await githubRes.text();
                 const bindingsRes = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/scripts/${scriptName}/bindings`, { headers });
@@ -254,7 +254,7 @@ export default {
                 if (!queryData.success) {
                     throw new Error("Database query failed");
                 }
-                const githubRes = await fetch("https://raw.githubusercontent.com/SRRoot/SRRoot-Panel/refs/heads/main/srroot.js?t=" + Date.now());
+                const githubRes = await fetch("https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/refs/heads/main/srroot.js?t=" + Date.now());
                 if (!githubRes.ok) throw new Error("Failed to fetch source from GitHub");
                 const newCode = await githubRes.text();
                 const newBindings = [];
@@ -443,7 +443,7 @@ function getHtmlContent() {
     </div>
 <div class="flex flex-col gap-4 mt-6 z-10">
     <div class="flex items-center gap-4 justify-center">
-        <a href="https://github.com/SRRoot/SRRoot-Panel" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-gray-700 text-gray-500 bg-gray-900/20 hover:bg-gray-900/40 rounded-full shadow-sm hover:shadow-md transition text-sm font-bold group">
+        <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-gray-700 text-gray-500 bg-gray-900/20 hover:bg-gray-900/40 rounded-full shadow-sm hover:shadow-md transition text-sm font-bold group">
             <svg class="w-5 h-5 group-hover:scale-110 transition" viewBox="0 0 24 24" fill="currentColor">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/>
             </svg>
