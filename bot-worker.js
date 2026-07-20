@@ -86,7 +86,8 @@ function mainMenu(userId) {
     return kb;
 }
 
-const WELCOME = "⚡ *خوش آمدید به ربات SRRoot Panel* ⚡\n\n🛠 مدیریت و ساخت پنل‌های حرفه‌ای روی کلودفلر\n🔥 روزانه ۱۰ الی ۱۰۰ گیگ کانفیگ رایگان\n\nاز منوی زیر عملیات مورد نظر را انتخاب کنید:";
+const WELCOME = "⚡ *خوش آمدید به ربات SRRoot Panel* ⚡\n\n🛠 مدیریت و ساخت پنل‌های حرفه‌ای روی کلودفلر
+📢 کانال: @SR_Panel\n🔥 روزانه ۱۰ الی ۱۰۰ گیگ کانفیگ رایگان\n\nاز منوی زیر عملیات مورد نظر را انتخاب کنید:";
 
 // ========== Handlers ==========
 async function handleStart(chatId, userId, kv) {

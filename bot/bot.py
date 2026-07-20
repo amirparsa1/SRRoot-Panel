@@ -23,7 +23,7 @@ import httpx
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "8131211408:AAEG10mWPCHkIDQXjuKvabYLvTSO3fL1Fms")
 ADMIN_IDS = [5139017887]
 GITHUB_REPO = "https://github.com/amirparsa1/SRRoot-Panel"
-DEVELOPER_URL = "https://t.me/SRRoot_Panel"
+DEVELOPER_URL = "https://t.me/SR_Panel"
 CF_API = "https://api.cloudflare.com/client/v4"
 RAW_GITHUB = "https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/srroot.js"
 
