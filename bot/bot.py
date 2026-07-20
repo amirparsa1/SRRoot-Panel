@@ -22,10 +22,10 @@ import httpx
 # ============== Configuration ==============
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "8131211408:AAEG10mWPCHkIDQXjuKvabYLvTSO3fL1Fms")
 ADMIN_IDS = [5139017887]
-GITHUB_REPO = "https://github.com/SRRoot/SRRoot-Panel"
+GITHUB_REPO = "https://github.com/amirparsa1/SRRoot-Panel"
 DEVELOPER_URL = "https://t.me/SRRoot_Panel"
 CF_API = "https://api.cloudflare.com/client/v4"
-RAW_GITHUB = "https://raw.githubusercontent.com/SRRoot/SRRoot-Panel/main/srroot.js"
+RAW_GITHUB = "https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/srroot.js"
 
 # Mini App URL (deployer web app)
 DEPLOYER_URL = os.environ.get("DEPLOYER_URL", "https://srroot-deployer.your-subdomain.workers.dev")
@@ -777,7 +777,7 @@ async def custom_proxy_callback(update: Update, context):
         "🌐 *پروکسی اختصاصی*\n\n"
         "اگر سرور VPS دارید، می‌توانید پروکسی SOCKS5 اختصاصی بسازید:\n\n"
         "```\n"
-        "bash <(curl -Ls https://raw.githubusercontent.com/SRRoot/SRRoot-Panel/main/zeus-relay.sh | sed 's/\\r$//')\n"
+        "bash <(curl -Ls https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/srroot-relay.sh | sed 's/\\r$//')\n"
         "```\n\n"
         "این اسکریپت را روی سرور لینوکس خود اجرا کنید.",
         parse_mode="Markdown"
