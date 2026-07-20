@@ -457,7 +457,7 @@ function getHtmlContent() {
         </a>
     </div>
     <div class="flex items-center gap-4 justify-center">
-        <a href="https://t.me/SRRoot_Panel_Bot" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-cyan-700 text-cyan-500 bg-cyan-900/20 hover:bg-cyan-900/40 rounded-full shadow-sm hover:shadow-md transition text-sm font-bold group">
+        <a href="https://t.me/srroot_bot" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-cyan-700 text-cyan-500 bg-cyan-900/20 hover:bg-cyan-900/40 rounded-full shadow-sm hover:shadow-md transition text-sm font-bold group">
             <svg class="w-5 h-5 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
             </svg>
