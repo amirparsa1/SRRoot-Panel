@@ -433,17 +433,17 @@ const Router = {
 	async handlePanel(request, env) {
 		const hasPassword = await DbService.getPanelPassword(env.DB);
 		if (!hasPassword) {
-			return new Response(HTML_TEMPLATES.setup, {
+			return new Response(HTML_TEMPLATES.setup, { headers: { "Content-Type": "text/html; charset=utf-8", "Access-Control-Allow-Origin": "*" } }, {
 				headers: { "Content-Type": "text/html; charset=utf-8" },
 			});
 		}
 		const authorized = await DbService.verifyApiAuth(request, env);
 		if (!authorized) {
-			return new Response(HTML_TEMPLATES.login, {
+			return new Response(HTML_TEMPLATES.login, { headers: { "Content-Type": "text/html; charset=utf-8", "Access-Control-Allow-Origin": "*" } }, {
 				headers: { "Content-Type": "text/html; charset=utf-8" },
 			});
 		}
-		return new Response(HTML_TEMPLATES.panel, {
+		return new Response(HTML_TEMPLATES.panel, { headers: { "Content-Type": "text/html; charset=utf-8", "Access-Control-Allow-Origin": "*" } }, {
 			headers: {
 				"Content-Type": "text/html; charset=utf-8",
 				"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
@@ -707,7 +707,7 @@ const Router = {
 			try {
 				const cfHeaders = {
 					"Authorization": "Bearer " + currentToken,
-					"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ZeusPanel/1.0"
+					"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SRRootPanel/1.0"
 				};
 				if (!currentAccountId) {
 					const accRes = await fetch("https://api.cloudflare.com/client/v4/accounts", { headers: cfHeaders });
@@ -1062,7 +1062,7 @@ const Router = {
 						const randomHex = Array.from(crypto.getRandomValues(new Uint8Array(6)))
 							.map(b => b.toString(16).padStart(2, "0"))
 							.join("");
-						finalUuid = `50414e45-4c5f-5a45-5553-${randomHex}`;
+						finalUuid = `5352524F-4F54-5632-3030-${randomHex}`;
 					}
 					const parsedUsedGb = parseFloat(used_gb);
 					const finalUsedGb = !isNaN(parsedUsedGb) ? parsedUsedGb : 0;
@@ -1230,10 +1230,8 @@ const SubscriptionService = {
 		const fp = user.fingerprint || "chrome";
 		const dynPath = encodeURIComponent("/stream/srvpnshop/" + ((user.uuid || "").split("-")[4] || "default"));
 		const links = [];
-		const m1 = decodeURIComponent("%E2%9A%A0%EF%B8%8F%D9%BE%D9%86%D9%84%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%20%D9%88%20%D8%BA%DB%8C%D8%B1%20%D9%82%D8%A7%D8%A8%D9%84%20%D9%81%D8%B1%D9%88%D8%B4%E2%9A%A0%EF%B8%8F");
-		const m2 = decodeURIComponent("%F0%9F%9A%80%40srvpnshop%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80");
-		links.push("vl" + "e" + "ss://" + user.uuid + "@0.0.0.0:1?encryption=none&security=none&type=ws&host=" + host + "&path=" + dynPath + "#" + encodeURIComponent(m1));
-		links.push("vl" + "e" + "ss://" + user.uuid + "@0.0.0.0:1?encryption=none&security=none&type=ws&host=" + host + "&path=" + dynPath + "#" + encodeURIComponent(m2));
+
+
 		let remVol = "Unlimited";
 		if (user.limit_gb) {
 			let rem = user.limit_gb - (user.used_gb || 0);
@@ -1330,7 +1328,7 @@ const SubscriptionService = {
 					const isTlsPort = TLS_PORTS.has(portStr);
 					const tlsVal = isTlsPort ? "tls" : "none";
 					const userFrag = user.frag_len && user.frag_int ? "&fragment=" + user.frag_len + "," + user.frag_int : "";
-					const remark = "ZEUS | " + flagEmoji + " | " + user.username;
+					const remark = "SRRoot | " + flagEmoji + " | " + user.username;
 					links.push("vl" + "e" + "ss://" + user.uuid + "@" + ip + ":" + portStr + "?path=" + currentDynPath + "&security=" + tlsVal + "&encryption=none&insecure=0&host=" + host + "&fp=" + fp + "&type=ws&allowInsecure=0&sni=" + host + userFrag + "#" + encodeURIComponent(remark));
 				});
 			});
@@ -2962,7 +2960,7 @@ const HTML_TEMPLATES = {
             <h2 class="text-xl font-bold mb-4 text-center text-orange-600 dark:text-orange-400">بازیابی رمز پـنـل</h2>
             <div class="mb-5 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800/50 rounded-md text-xs leading-relaxed text-orange-800 dark:text-orange-300">
                 برای احراز هویت و اثبات مالکیت پـنـل، از طریق دکمه زیر وارد کلودفلر شوید و توکن دریافتی را کپی کرده و در کادر زیر وارد کنید.
-                <a href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22d1%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_subdomain%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=Zeus-Deployer-Token" target="_blank" class="mt-3 w-full flex items-center justify-center gap-2 py-2 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 rounded-md font-bold transition shadow-md">
+                <a href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22d1%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_subdomain%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=SRRoot-Deployer-Token" target="_blank" class="mt-3 w-full flex items-center justify-center gap-2 py-2 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 rounded-md font-bold transition shadow-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                     دریافت توکن
                 </a>
@@ -3385,7 +3383,7 @@ const HTML_TEMPLATES = {
         </div>
         <h3 class="font-black text-xl text-gray-900 dark:text-white mb-2">هشدار محدودیت درخواست روزانه</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed font-medium">
-            درخواست‌های روزانه کلودفلر شما از ۹۰,۰۰۰ عبور کرده است. در صورت عبور از محدودیت رایگان ۱۰۰,۰۰۰ درخواست، دسترسی به پـنـل و اتصالات تا ساعت ۳:۳۰ بامداد (به وقت ایران) قطع خواهد شد.
+            درخواست‌های روزانه کلودفلر شما از ۹۰,۰۰۰ عبور کرده است. در صورت عبور از محدودیت ۱۰۰,۰۰۰ درخواست، دسترسی به پـنـل و اتصالات تا ساعت ۳:۳۰ بامداد (به وقت ایران) قطع خواهد شد.
         </p>
         <button onclick="closeUsageWarning()" class="w-full py-3.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-black rounded-md text-sm transition duration-300 shadow-lg">
             متوجه شدم
@@ -3399,7 +3397,7 @@ const HTML_TEMPLATES = {
         </div>
         <h3 class="font-black text-xl text-gray-900 dark:text-white mb-2">🚨 🛑 اخطار 🛑 🚨</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed font-medium">
-این پـنـل <span class="text-red-500 font-bold">رایگان</span> است. هرگونه <span class="text-amber-500 font-bold">فروش پـنـل یا کـانفـیگ‌های آن</span>، و همچنین <span class="text-amber-500 font-bold">انتشار کـانفـیگ‌ها برای گرفتن ممبر و بازدید</span>، مصداق <span class="text-red-500 font-bold">کلاه‌برداری و رفتاری دور از انسانیت و شرافت</span> است. لطفاً از این ابزار <span class="text-green-500 font-bold">فقط به صورت شخصی و رایگان</span> استفاده کنید.        </p>
+این پـنـل برای استفاده شخصی طراحی شده است.        </p>
         <button onclick="closeFreePanelWarning()" class="w-full py-3.5 bg-transparent border-2 border-green-800 text-green-900 hover:bg-green-800 hover:text-white dark:border-green-800 dark:text-green-700 dark:hover:bg-green-900 dark:hover:text-white font-black rounded-md text-sm transition duration-300 shadow-lg">
             تأیید و موافقت
         </button>
@@ -3476,7 +3474,7 @@ const HTML_TEMPLATES = {
                                     <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                     </span>
-                                    <input type="text" id="input-name" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')" placeholder="Z_E_U_S" maxlength="32" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition" required>
+                                    <input type="text" id="input-name" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')" placeholder="username" maxlength="32" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition" required>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2.5">
@@ -3664,7 +3662,7 @@ const HTML_TEMPLATES = {
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 mt-1 w-full">
                                     
-                                    <a href="https://github.com/amirparsa1/SRRoot-Panel#%EF%B8%8F-build-your-own-socks5-proxy-zeus-relay" target="_blank" class="text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-2 rounded border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition font-black shadow-sm text-center whitespace-nowrap">ساخت پـروکـسـی شخصی</a>
+                                    <a href="https://github.com/amirparsa1/SRRoot-Panel#%EF%B8%8F-build-your-own-socks5-proxy-srroot-relay" target="_blank" class="text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-2 rounded border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition font-black shadow-sm text-center whitespace-nowrap">ساخت پـروکـسـی شخصی</a>
                                 </div>
                             </div>
                         </div>
@@ -3757,7 +3755,7 @@ const HTML_TEMPLATES = {
                     پـروکـسـی های عمومی
                 </h4>
                 <p class="text-[10px] text-gray-500 dark:text-zinc-500 mb-3 leading-relaxed font-medium">
-                    جستجو در منابع رایگان؛ به دلیل نیاز به تست کیفیت زمان‌بر است.
+                    جستجو در منابع؛ به دلیل نیاز به تست کیفیت زمان‌بر است.
                 </p>
                 <div id="proxy-loading-state" class="text-center text-[11px] text-blue-500 font-bold hidden my-3 whitespace-pre-line leading-relaxed">
                     در حال اسکن...
@@ -3926,7 +3924,7 @@ const HTML_TEMPLATES = {
             <div class="mb-5 p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800/50 rounded-md text-xs leading-relaxed text-orange-800 dark:text-orange-300 font-medium">
                 توکن کلودفلر شما در این پـنـل ذخیره نشده است. برای فعال‌سازی آپدیت خودکار از داخل پـنـل، لطفاً توکن خود را دریافت کرده و در کادر زیر وارد کنید.
             </div>
-            <a href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22d1%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_subdomain%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=Zeus-Deployer-Token" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 bg-[#d94800] hover:bg-[#e35802] text-white font-bold rounded-md text-sm transition duration-300 mb-4 shadow-md shadow-orange-500/20">
+            <a href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_kv_storage%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22d1%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_settings%22%2C%22type%22%3A%22read%22%7D%2C%7B%22key%22%3A%22workers_subdomain%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22account_analytics%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=SRRoot-Deployer-Token" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 bg-[#d94800] hover:bg-[#e35802] text-white font-bold rounded-md text-sm transition duration-300 mb-4 shadow-md shadow-orange-500/20">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 دریافت توکن کلودفلر
             </a>
@@ -4327,7 +4325,7 @@ ${COMMON_TOAST_HTML}
 				const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 				let randStr = '';
 				for (let i = 0; i < 8; i++) randStr += chars.charAt(Math.floor(Math.random() * chars.length));
-				const username = 'ZEUS-' + randStr;
+				const username = 'SR-' + randStr;
 				let vipCountries = [];
 				try {
 					const resVipList = await fetchWithFallbackUI('vip-list?t=' + Date.now());
@@ -5256,12 +5254,12 @@ function setModalState(modalId, show) {
             if (!firstLine.startsWith('VERSION=')) return;
             const version = firstLine.split('=')[1].trim();
             const content = lines.slice(1).join('\\n').trim();
-            if (window.zeus_global_msg_version !== version) {
+            if (window.srroot_global_msg_version !== version) {
                 document.getElementById('global-message-content').innerHTML = content;
                 setModalState('global-message-modal', true);
                 document.getElementById('global-message-close-btn').onclick = function() {
                     setModalState('global-message-modal', false);
-                    window.zeus_global_msg_version = version;
+                    window.srroot_global_msg_version = version;
                 };
             }
         } catch (err) {}
@@ -5279,10 +5277,8 @@ function setModalState(modalId, show) {
             var fp = user.fingerprint || 'chrome';
             const dynPath = encodeURIComponent("/stream/srvpnshop/" + (user.uuid ? user.uuid.split("-")[4] : "default"));
             const links = [];
-		const m1 = decodeURIComponent('%E2%9A%A0%EF%B8%8F%D9%BE%D9%86%D9%84%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%20%D9%88%20%D8%BA%DB%8C%D8%B1%20%D9%82%D8%A7%D8%A8%D9%84%20%D9%81%D8%B1%D9%88%D8%B4%E2%9A%A0%EF%B8%8F');
-		const m2 = decodeURIComponent('%F0%9F%9A%80%40srvpnshop%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80');
-		links.push('vle' + 'ss://' + (user.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m1));
-		links.push('vle' + 'ss://' + (user.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m2));
+
+
             let remVol = "Unlimited";
             if (user.limit_gb) {
                 let rem = user.limit_gb - (user.used_gb || 0);
@@ -5334,7 +5330,7 @@ function setModalState(modalId, show) {
                         const isTlsPort = ["443", "2053", "2083", "2087", "2096", "8443"].includes(portStr);
                         const tlsVal = isTlsPort ? "tls" : "none";
                         const userFrag = user.frag_len && user.frag_int ? "&fragment=" + user.frag_len + "," + user.frag_int : "";
-                        const remark = "ZEUS | " + flagEmoji + " | " + user.username;
+                        const remark = "SRRoot | " + flagEmoji + " | " + user.username;
                         links.push('vle' + 'ss://' + (user.uuid || '') + '@' + ip + ':' + portStr + '?path=' + currentDynPath + '&security=' + tlsVal + '&encryption=none&insecure=0&host=' + host + '&fp=' + fp + '&type=ws&allowInsecure=0&sni=' + host + userFrag + '#' + encodeURIComponent(remark));
                     });
                 });
@@ -5380,7 +5376,7 @@ function setModalState(modalId, show) {
             }
             const downloadAnchor = document.createElement('a');
             downloadAnchor.href = dataUrl;
-            downloadAnchor.download = "zeus_qrcode_" + Date.now() + ".png";
+            downloadAnchor.download = "srroot_qrcode_" + Date.now() + ".png";
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -5647,7 +5643,7 @@ async function testUserSocksProxy() {
                     String(now.getMinutes()).padStart(2, '0') + '-' + 
                     String(now.getSeconds()).padStart(2, '0');
                 downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", "zeus_backup_" + host + "_" + dateTimeStr + ".json");
+                downloadAnchor.setAttribute("download", "srroot_backup_" + host + "_" + dateTimeStr + ".json");
                 document.body.appendChild(downloadAnchor);
                 downloadAnchor.click();
                 downloadAnchor.remove();
@@ -6116,11 +6112,11 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             window.changeRefreshRate = function(val) {
                 const ms = parseInt(val, 10);
-                localStorage.setItem('zeus_refresh_rate', ms);
+                localStorage.setItem('srroot_refresh_rate', ms);
                 window.startRefreshInterval(ms);
                 showToast('نرخ رفرش پـنـل تغییر کرد');
             };
-            const savedRate = localStorage.getItem('zeus_refresh_rate');
+            const savedRate = localStorage.getItem('srroot_refresh_rate');
             const initialRate = savedRate ? parseInt(savedRate, 10) : 10000;
             const selectEl = document.getElementById('refresh-rate-select');
             if (selectEl) {
@@ -6649,10 +6645,8 @@ ${COMMON_TOAST_HTML}
 			var fp = u.fingerprint || 'chrome';
 			const dynPath = encodeURIComponent("/stream/srvpnshop/" + (u.uuid ? u.uuid.split("-")[4] : "default"));
 			const links = [];
-			const m1 = decodeURIComponent('%E2%9A%A0%EF%B8%8F%D9%BE%D9%86%D9%84%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%20%D9%88%20%D8%BA%DB%8C%D8%B1%20%D9%82%D8%A7%D8%A8%D9%84%20%D9%81%D8%B1%D9%88%D8%B4%E2%9A%A0%EF%B8%8F');
-			const m2 = decodeURIComponent('%F0%9F%9A%80%40srvpnshop%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80');
-			links.push('vle' + 'ss://' + (u.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m1));
-			links.push('vle' + 'ss://' + (u.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m2));
+
+
 			let remVol = "Unlimited";
 			if (u.limit_gb) {
 				let rem = u.limit_gb - (u.used_gb || 0);
@@ -6704,7 +6698,7 @@ ${COMMON_TOAST_HTML}
 						const isTlsPort = ["443", "2053", "2083", "2087", "2096", "8443"].includes(portStr);
 						const tlsVal = isTlsPort ? "tls" : "none";
 						const userFrag = u.frag_len && u.frag_int ? "&fragment=" + u.frag_len + "," + u.frag_int : "";
-						const remark = "ZEUS | " + flagEmoji + " | " + u.username;
+						const remark = "SRRoot | " + flagEmoji + " | " + u.username;
 						links.push('vle' + 'ss://' + (u.uuid || '') + '@' + ip + ':' + portStr + '?path=' + currentDynPath + '&security=' + tlsVal + '&encryption=none&insecure=0&host=' + host + '&fp=' + fp + '&type=ws&allowInsecure=0&sni=' + host + userFrag + '#' + encodeURIComponent(remark));
 					});
 				});
@@ -6760,7 +6754,7 @@ ${COMMON_TOAST_HTML}
 			}
 			const downloadAnchor = document.createElement('a');
 			downloadAnchor.href = dataUrl;
-			downloadAnchor.download = "zeus_qrcode_" + Date.now() + ".png";
+			downloadAnchor.download = "srroot_qrcode_" + Date.now() + ".png";
 			document.body.appendChild(downloadAnchor);
 			downloadAnchor.click();
 			downloadAnchor.remove();
