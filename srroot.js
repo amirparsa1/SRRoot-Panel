@@ -3057,63 +3057,170 @@ const HTML_TEMPLATES = {
     ${COMMON_HEAD}
     <style>
         body { font-family: 'Vazirmatn', sans-serif; }
-		.dark input[type="checkbox"] {
-            filter: invert(1) hue-rotate(180deg);
+        .dark input[type="checkbox"] { filter: invert(1) hue-rotate(180deg); }
+        
+        /* Persian Gold Theme */
+        :root {
+            --sr-gold: #D4A853;
+            --sr-gold-dark: #B8912F;
+            --sr-gold-light: #E8C97A;
+            --sr-stone: #2C1810;
+            --sr-stone-light: #3d2418;
+            --sr-bg: #0f0b07;
+            --sr-card: #1a1208;
+            --sr-border: rgba(212, 168, 83, 0.15);
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #f3f4f6; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #D4A853; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E8C97A; }
+        .dark ::-webkit-scrollbar-track { background: var(--sr-bg); }
+        .dark ::-webkit-scrollbar-thumb { background: var(--sr-gold); }
+        * { scrollbar-width: thin; scrollbar-color: #D4A853 var(--sr-bg); }
+        
+        /* Dark mode body */
+        .dark { background: var(--sr-bg); }
+        .dark body { background: var(--sr-bg) !important; }
+        
+        /* Sidebar */
+        .sr-sidebar {
+            position: fixed; right: 0; top: 0; bottom: 0; width: 240px;
+            background: var(--sr-card); border-left: 1px solid var(--sr-border);
+            z-index: 100; transform: translateX(100%); transition: transform 0.25s ease;
+            overflow-y: auto; display: flex; flex-direction: column;
         }
-        ::-webkit-scrollbar-track {
-            background: #f3f4f6; 
-            border-radius: 4px;
+        .sr-sidebar.open { transform: translateX(0); }
+        @media (min-width: 1024px) { .sr-sidebar { transform: translateX(0); } }
+        
+        .sr-sidebar-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 99; display: none;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #d1d5db; 
-            border-radius: 4px;
+        .sr-sidebar-overlay.open { display: block; }
+        @media (min-width: 1024px) { .sr-sidebar-overlay { display: none !important; } }
+        
+        .sr-sidebar-header {
+            padding: 20px 16px; border-bottom: 1px solid var(--sr-border);
+            background: linear-gradient(135deg, var(--sr-gold) 0%, var(--sr-gold-dark) 100%);
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #9ca3af;
+        .sr-sidebar-logo { display: flex; align-items: center; gap: 10px; }
+        .sr-sidebar-icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: rgba(255,255,255,0.2); display: flex;
+            align-items: center; justify-content: center; font-size: 18px;
         }
-        .dark ::-webkit-scrollbar-track {
-            background: #000105; 
+        .sr-sidebar-title { color: white; font-weight: 800; font-size: 16px; }
+        .sr-sidebar-sub { color: rgba(255,255,255,0.7); font-size: 10px; }
+        
+        .sr-nav { padding: 12px 8px; flex: 1; }
+        .sr-nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: 10px; margin-bottom: 2px;
+            color: #A89080; font-size: 13px; font-weight: 500;
+            text-decoration: none; transition: all 0.15s ease; cursor: pointer;
         }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #102040; 
+        .sr-nav-item:hover { background: var(--sr-stone-light); color: var(--sr-gold-light); }
+        .sr-nav-item.active {
+            background: linear-gradient(135deg, rgba(212,168,83,0.15), rgba(212,168,83,0.05));
+            color: var(--sr-gold); border: 1px solid var(--sr-border);
         }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #172e5c;
+        .sr-nav-icon { width: 20px; text-align: center; font-size: 14px; }
+        
+        .sr-sidebar-footer {
+            padding: 12px 16px; border-top: 1px solid var(--sr-border);
+            font-size: 10px; color: #665540;
         }
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #d1d5db #f3f4f6;
+        
+        /* Main content offset */
+        @media (min-width: 1024px) {
+            .sr-main-offset { margin-right: 240px; }
         }
-        .dark * {
-            scrollbar-color: #102040 #000105;
+        
+        /* Menu toggle button */
+        .sr-menu-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--sr-border);
+            background: var(--sr-card); color: var(--sr-gold); cursor: pointer;
+            transition: all 0.15s ease;
         }
-        @media (min-width: 769px) {
-            header, main { zoom: 1.18; }
+        .sr-menu-btn:hover { background: var(--sr-gold); color: white; }
+        @media (min-width: 1024px) { .sr-menu-btn { display: none; } }
+        
+        /* Dark cards */
+        .dark .bg-amoled-card { background: var(--sr-card) !important; border-color: var(--sr-border) !important; }
+        .dark .bg-amoled-input { background: var(--sr-stone-light) !important; border-color: var(--sr-border) !important; }
+        .dark .bg-amoled-bg { background: var(--sr-bg) !important; }
+        .dark .border-amoled-border { border-color: var(--sr-border) !important; }
+        .dark .bg-white { background: var(--sr-card) !important; }
+        .dark .bg-gray-50 { background: var(--sr-stone-light) !important; }
+        .dark .bg-gray-100 { background: var(--sr-stone-light) !important; }
+        .dark .text-gray-900, .dark .text-gray-800 { color: #F5E6D3 !important; }
+        .dark .text-gray-600, .dark .text-gray-500 { color: #A89080 !important; }
+        .dark .text-gray-400 { color: #887060 !important; }
+        .dark .border-gray-200, .dark .border-gray-300 { border-color: var(--sr-border) !important; }
+        
+        /* Gold accent for interactive elements */
+        .dark .bg-emerald-50 { background: rgba(212,168,83,0.1) !important; }
+        .dark .text-emerald-600, .dark .text-emerald-500, .dark .text-emerald-400 { color: var(--sr-gold) !important; }
+        .dark .bg-emerald-100 { background: rgba(212,168,83,0.15) !important; }
+        .dark .bg-emerald-900\/30, .dark .bg-emerald-950\/30 { background: rgba(212,168,83,0.1) !important; }
+        .dark .border-emerald-200, .dark .border-emerald-800 { border-color: var(--sr-border) !important; }
+        .dark .hover\:bg-emerald-100:hover { background: rgba(212,168,83,0.2) !important; }
+        .dark .focus\:ring-emerald-500\/50:focus { --tw-ring-color: rgba(212,168,83,0.3) !important; }
+        .dark .focus\:ring-emerald-500:focus { --tw-ring-color: var(--sr-gold) !important; }
+        .dark .hover\:border-emerald-400:hover, .dark .hover\:border-emerald-500\/50:hover { border-color: var(--sr-gold) !important; }
+        .dark .checked\:bg-emerald-600:checked { background-color: var(--sr-gold) !important; }
+        .dark .checked\:border-emerald-600:checked { border-color: var(--sr-gold) !important; }
+        
+        /* Gold progress bars */
+        .dark .bg-emerald-500 { background: var(--sr-gold) !important; }
+        
+        /* Column pattern decoration */
+        .sr-column-deco {
+            position: relative;
         }
-        @media (max-width: 768px) {
-            header, main { zoom: 0.90; }
+        .sr-column-deco::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 3px;
+            background: repeating-linear-gradient(0deg, var(--sr-gold) 0px, var(--sr-gold) 12px, transparent 12px, transparent 16px);
+            opacity: 0.3; border-radius: 2px;
         }
+        
+        /* Number inputs */
         input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+        
+        /* Theme selector */
+        .sr-theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .sr-theme-btn {
+            padding: 8px; border-radius: 10px; border: 2px solid transparent;
+            cursor: pointer; text-align: center; font-size: 11px; font-weight: 600;
+            transition: all 0.15s ease;
         }
-        input[type="number"] {
-            -moz-appearance: textfield;
+        .sr-theme-btn:hover { transform: scale(1.05); }
+        .sr-theme-btn.active { border-color: white; box-shadow: 0 0 0 2px var(--sr-gold); }
+        
+        /* Geometric Persian pattern */
+        .sr-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23D4A853' fill-opacity='0.04'%3E%3Cpath d='M20 0L40 20L20 40L0 20z'/%3E%3C/g%3E%3C/svg%3E");
         }
+        
+        @media (min-width: 769px) { header, main { zoom: 1.18; } }
+        @media (max-width: 768px) { header, main { zoom: 0.90; } }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen transition-colors duration-200">
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen transition-colors duration-200 sr-pattern">
     <header class="border-b border-gray-200 dark:border-amoled-border bg-white dark:bg-amoled-card px-4 py-4">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex flex-row flex-wrap justify-center items-center gap-3 w-full md:w-auto">
+                <button class="sr-menu-btn" onclick="srToggleSidebar()" title="منو">☰</button>
                 <h1 class="text-lg font-bold flex items-center gap-2" dir="ltr">
-                    🔥 SRRoot Panel
-                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v5.0.0.1</span>
+                    🏛️ SRRoot Panel
+                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v6.0.0</span>
                 </h1>
                 <div class="flex items-center gap-3 bg-gray-100 dark:bg-zinc-800/60 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-800/80 shadow-sm flex-shrink-0 w-fit">
                     <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-all transform hover:scale-125 duration-200 flex-shrink-0" title="GitHub">
@@ -3221,8 +3328,54 @@ const HTML_TEMPLATES = {
                 </button>
             </div>
         </div>
-    </header>
-    <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32">
+
+    <!-- Persian Sidebar -->
+    <div class="sr-sidebar-overlay" id="sr-overlay" onclick="srToggleSidebar()"></div>
+    <aside class="sr-sidebar" id="sr-sidebar">
+        <div class="sr-sidebar-header">
+            <div class="sr-sidebar-logo">
+                <div class="sr-sidebar-icon">🏛️</div>
+                <div>
+                    <div class="sr-sidebar-title">SRRoot Panel</div>
+                    <div class="sr-sidebar-sub">Persian Edition v6.0.0</div>
+                </div>
+            </div>
+        </div>
+        <nav class="sr-nav">
+            <a class="sr-nav-item active" onclick="srNavClick(this, 'dashboard')">
+                <span class="sr-nav-icon">📊</span> داشبورد
+            </a>
+            <a class="sr-nav-item" onclick="srNavClick(this, 'users')">
+                <span class="sr-nav-icon">👥</span> کاربران
+            </a>
+            <a class="sr-nav-item" onclick="openCreateModal()">
+                <span class="sr-nav-icon">➕</span> افزودن کاربر
+            </a>
+            <a class="sr-nav-item" onclick="srNavClick(this, 'settings')">
+                <span class="sr-nav-icon">⚙️</span> تنظیمات
+            </a>
+            <a class="sr-nav-item" onclick="toggleSettingsModal(true)">
+                <span class="sr-nav-icon">🎨</span> تم و ظاهر
+            </a>
+        </nav>
+        <div class="sr-sidebar-footer">
+            <div>🏛️ SRRoot Panel</div>
+            <div>الهام از تخت جمشید</div>
+        </div>
+    </aside>
+    <script>
+    function srToggleSidebar() {
+        document.getElementById('sr-sidebar').classList.toggle('open');
+        document.getElementById('sr-overlay').classList.toggle('open');
+    }
+    function srNavClick(el, section) {
+        document.querySelectorAll('.sr-nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        if (window.innerWidth < 1024) srToggleSidebar();
+    }
+    </script>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32 sr-main-offset">
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
     <div class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-violet-400 dark:hover:border-violet-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
         <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-violet-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
@@ -5854,7 +6007,7 @@ async function testUserSocksProxy() {
                 window.location.reload();
             }
         }
-const CURRENT_VERSION = '5.0.0.1';
+const CURRENT_VERSION = '6.0.0';
 const UPDATE_FIX = "constsCURRENT_VERSION='d.d.d'";
 		window.autoUpdateStatusCache = false;
 		async function checkAutoUpdateSetup() {
