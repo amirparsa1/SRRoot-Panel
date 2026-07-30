@@ -3086,6 +3086,13 @@ const HTML_TEMPLATES = {
         
         /* Text glow */
         .text-glow { text-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
+        
+        /* Sidebar styles */
+        @media (max-width: 1023px) {
+            #sr-sidebar { box-shadow: -4px 0 20px rgba(0,0,0,0.3); }
+        }
+        .nav-link { position: relative; }
+        .nav-link:hover { background: rgba(255,255,255,0.03); }
         .dark body { background: #070714; }
 		.dark input[type="checkbox"] {
             filter: invert(1) hue-rotate(180deg);
@@ -3144,6 +3151,9 @@ const HTML_TEMPLATES = {
     <header class="border-b border-gray-200 dark:border-[#1a1a2e] bg-white dark:bg-[#0c0c1d] px-4 py-2.5">
         <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
                 <h1 class="text-base font-extrabold flex items-center gap-1.5 text-gray-800 dark:text-white" dir="ltr">
                     <div class="w-8 h-8 bg-gradient-to-br from-peach-400 to-pink-600 rounded-lg flex items-center justify-center shadow-lg shadow-peach-500/20">
                         <i class="fas fa-shield-alt text-white text-sm"></i>
@@ -3229,18 +3239,74 @@ const HTML_TEMPLATES = {
             </div>
         </div>
     </header>
-    <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32">
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-    <div class="bg-white dark:bg-dark-800 border border-gray-200 dark:border-white/[0.06] rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-violet-400 dark:hover:border-violet-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
-        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-violet-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
-        <div class="flex items-center justify-between relative z-10">
-            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">تعداد کل کاربران</span>
-            <div class="p-1 bg-violet-50 dark:bg-pink-500/10 text-violet-600 dark:text-pink-400 rounded-md flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+    
+    <!-- Sidebar -->
+    <aside id="sr-sidebar" class="fixed right-0 top-0 h-screen w-60 bg-white dark:bg-dark-800 border-l border-gray-200 dark:border-white/[0.06] z-40 transform translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col" style="padding-top: 0;">
+        <div class="p-5 flex-1 flex flex-col overflow-y-auto">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 mb-8 pt-4">
+                <div class="w-10 h-10 bg-gradient-to-br from-peach-400 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-peach-500/20">
+                    <i class="fas fa-shield-alt text-white text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="font-black text-base bg-gradient-to-r from-peach-400 to-pink-500 bg-clip-text text-transparent">SRRoot</h2>
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500">v5.0.0.1</span>
+                </div>
+            </div>
+
+            <!-- Nav Items -->
+            <nav class="space-y-1 flex-1">
+                <a href="#" onclick="scrollToSection('stat-cards'); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl bg-peach-500/10 text-peach-500 border-r-2 border-peach-500 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-peach-500/15 flex items-center justify-center">
+                        <i class="fas fa-home text-peach-400 text-sm"></i>
+                    </div>
+                    <span class="text-sm font-medium">داشبورد</span>
+                </a>
+                <a href="#" onclick="scrollToSection('users-section'); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-600 dark:text-gray-400 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                        <i class="fas fa-users text-purple-400 text-sm"></i>
+                    </div>
+                    <span class="text-sm font-medium">کاربران</span>
+                    <span id="sidebar-user-count" class="mr-auto bg-peach-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">0</span>
+                </a>
+                <a href="#" onclick="openCreateModal(); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-600 dark:text-gray-400 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                        <i class="fas fa-user-plus text-green-400 text-sm"></i>
+                    </div>
+                    <span class="text-sm font-medium">افزودن کاربر</span>
+                </a>
+                <a href="#" onclick="toggleSettingsModal(true); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-600 dark:text-gray-400 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                        <i class="fas fa-cog text-yellow-400 text-sm"></i>
+                    </div>
+                    <span class="text-sm font-medium">تنظیمات</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="pt-4 border-t border-gray-200 dark:border-white/[0.06] space-y-1">
+                <a href="https://t.me/srvpnshop" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-500 dark:text-gray-400 transition-all">
+                    <i class="fab fa-telegram text-sm"></i>
+                    <span class="text-xs">کانال</span>
+                </a>
+                <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-500 dark:text-gray-400 transition-all">
+                    <i class="fab fa-github text-sm"></i>
+                    <span class="text-xs">گیت‌هاب</span>
+                </a>
             </div>
         </div>
-        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
-            <div class="text-lg font-black text-gray-900 dark:text-zinc-100 transition-all leading-none" id="stat-total-users">0</div>
+    </aside>
+    
+    <!-- Sidebar Overlay (mobile) -->
+    <div id="sr-sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <main class="max-w-6xl mx-auto px-4 py-6 pb-56 md:pb-32 lg:mr-60 transition-all duration-200">
+<div id="stat-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+    <div class="bg-white dark:bg-dark-800/70 border border-gray-200 dark:border-white/[0.06] rounded-2xl p-4 shadow-sm hover-lift relative overflow-hidden group min-h-[80px]">
+        <div class="flex items-start justify-between relative z-10">
+            <div>
+                <p class="text-gray-400 dark:text-gray-500 text-[11px] mb-1">تعداد کل کاربران</p>
+                <h3 class="text-2xl font-black dark:text-white leading-none" id="stat-total-users">0</h3>
             <span class="text-[9px] text-violet-500 dark:text-pink-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none mb-0.5">
                 <span class="w-1 h-1 bg-violet-500 rounded-full animate-ping"></span>
                 کل کاربران تعریف شده
@@ -3338,7 +3404,7 @@ const HTML_TEMPLATES = {
             </div>
         </div>
 		<div class="flex items-center justify-between mb-4">
-			<h2 class="text-lg font-bold text-gray-800 dark:text-zinc-200">لیست کاربران</h2>
+			<h2 id="users-section" class="text-lg font-bold text-gray-800 dark:text-zinc-200">لیست کاربران</h2>
 			<div class="flex items-center gap-2">
 				<button onclick="quickCreateUser(this)" title="افزودن کاربر سریع (VIP)" class="p-2 rounded-md bg-violet-50 dark:bg-pink-500/10 border-2 border-violet-600 dark:border-pink-500/30 hover:bg-violet-100 dark:hover:bg-pink-500/15 transition-all duration-300 text-violet-700 dark:text-pink-400 shadow-sm hover:shadow hover:scale-110 cursor-pointer inline-flex items-center justify-center">
 					<svg id="quick-add-icon" class="w-6 h-6 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -3384,6 +3450,42 @@ const HTML_TEMPLATES = {
         <div id="empty-state" class="hidden p-8 border-2 border-dashed border-red-500/60 dark:border-red-500/50 bg-red-50 dark:bg-red-900/10 rounded-md text-center animate-pulse shadow-sm">
             <p class="text-rose-600 dark:text-[#ef4444] font-bold text-lg">کاربری وجود ندارد. برای ساخت اولین کاربر روی دکمه « + » کلیک کنید یا از دکمه ⚡️ برای ایجاد سریع کاربر استفاده کنید.</p>
         </div>
+
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sr-sidebar');
+        const overlay = document.getElementById('sr-sidebar-overlay');
+        sidebar.classList.toggle('translate-x-full');
+        overlay.classList.toggle('hidden');
+    }
+    function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Update active nav
+        document.querySelectorAll('.nav-link').forEach(l => {
+            l.classList.remove('bg-peach-500/10', 'text-peach-500', 'border-r-2', 'border-peach-500');
+            l.classList.add('hover:bg-white/5', 'dark:hover:bg-white/[0.03]', 'text-gray-600', 'dark:text-gray-400');
+        });
+        event.currentTarget.classList.add('bg-peach-500/10', 'text-peach-500', 'border-r-2', 'border-peach-500');
+        event.currentTarget.classList.remove('hover:bg-white/5', 'dark:hover:bg-white/[0.03]', 'text-gray-600', 'dark:text-gray-400');
+        // Close sidebar on mobile
+        if (window.innerWidth < 1024) toggleSidebar();
+    }
+    function updateSidebarUserCount() {
+        const el = document.getElementById('sidebar-user-count');
+        const totalEl = document.getElementById('stat-total-users');
+        if (el && totalEl) el.textContent = totalEl.textContent;
+    }
+    // Auto-close sidebar on resize to desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 1024) {
+            document.getElementById('sr-sidebar').classList.remove('translate-x-full');
+            document.getElementById('sr-sidebar-overlay').classList.add('hidden');
+        }
+    });
+    // Update sidebar count periodically
+    setInterval(updateSidebarUserCount, 2000);
+    </script>
     </main>
 <div id="usage-warning-modal" class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/70 opacity-0 pointer-events-none transition-all duration-300 ease-out">
     <div class="w-full max-w-md bg-white dark:bg-dark-800 border border-orange-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
@@ -6452,6 +6554,13 @@ window.addEventListener('click', (e) => {
         
         /* Text glow */
         .text-glow { text-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
+        
+        /* Sidebar styles */
+        @media (max-width: 1023px) {
+            #sr-sidebar { box-shadow: -4px 0 20px rgba(0,0,0,0.3); }
+        }
+        .nav-link { position: relative; }
+        .nav-link:hover { background: rgba(255,255,255,0.03); }
         .glass {
             background: rgba(10, 10, 10, 0.6);
             backdrop-filter: blur(12px);
