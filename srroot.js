@@ -3049,7 +3049,7 @@ const HTML_TEMPLATES = {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SR ROOT</title>
+    <title>SRRoot Panel</title>
 	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
     <script>
         const originalWarn = console.warn;
@@ -3148,7 +3148,7 @@ const HTML_TEMPLATES = {
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-dark-900 dark:text-zinc-100 min-h-screen transition-colors duration-200 page-bg">
-    <header class="border-b border-gray-200 dark:border-[#1a1a2e] bg-white dark:bg-[#0c0c1d] px-4 py-2.5">
+    <header class="sticky top-0 z-50 border-b border-gray-200 dark:border-white/[0.06] bg-white/95 dark:bg-dark-900/95 backdrop-blur-sm px-4 py-2.5">
         <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition">
@@ -3241,10 +3241,10 @@ const HTML_TEMPLATES = {
     </header>
     
     <!-- Sidebar -->
-    <aside id="sr-sidebar" class="fixed right-0 top-0 h-screen w-60 bg-white dark:bg-dark-800 border-l border-gray-200 dark:border-white/[0.06] z-40 transform translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col" style="padding-top: 0;">
+    <aside id="sr-sidebar" class="fixed right-0 top-[52px] h-[calc(100vh-52px)] w-60 bg-white dark:bg-dark-800 border-l border-gray-200 dark:border-white/[0.06] z-40 transform translate-x-full lg:translate-x-0 transition-transform duration-200 flex flex-col">
         <div class="p-5 flex-1 flex flex-col overflow-y-auto">
             <!-- Logo -->
-            <div class="flex items-center gap-3 mb-8 pt-4">
+            <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 bg-gradient-to-br from-peach-400 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-peach-500/20">
                     <i class="fas fa-shield-alt text-white text-lg"></i>
                 </div>
@@ -3256,26 +3256,26 @@ const HTML_TEMPLATES = {
 
             <!-- Nav Items -->
             <nav class="space-y-1 flex-1">
-                <a href="#" onclick="scrollToSection('stat-cards'); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl bg-peach-500/10 text-peach-500 border-r-2 border-peach-500 transition-all">
+                <a href="#" onclick="scrollToSection('stat-cards'); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl bg-peach-500/10 text-peach-500 transition-all shadow-sm shadow-peach-500/10">
                     <div class="w-8 h-8 rounded-lg bg-peach-500/15 flex items-center justify-center">
                         <i class="fas fa-home text-peach-400 text-sm"></i>
                     </div>
                     <span class="text-sm font-medium">داشبورد</span>
                 </a>
-                <a href="#" onclick="scrollToSection('users-section'); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-600 dark:text-gray-400 transition-all">
+                <a href="#" onclick="scrollToSection('users-section'); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.05] text-gray-600 dark:text-gray-400 transition-all">
                     <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
                         <i class="fas fa-users text-purple-400 text-sm"></i>
                     </div>
                     <span class="text-sm font-medium">کاربران</span>
                     <span id="sidebar-user-count" class="mr-auto bg-peach-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">0</span>
                 </a>
-                <a href="#" onclick="openCreateModal(); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-600 dark:text-gray-400 transition-all">
+                <a href="#" onclick="openCreateModal(); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.05] text-gray-600 dark:text-gray-400 transition-all">
                     <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
                         <i class="fas fa-user-plus text-green-400 text-sm"></i>
                     </div>
                     <span class="text-sm font-medium">افزودن کاربر</span>
                 </a>
-                <a href="#" onclick="toggleSettingsModal(true); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-600 dark:text-gray-400 transition-all">
+                <a href="#" onclick="toggleSettingsModal(true); return false;" class="nav-link flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.05] text-gray-600 dark:text-gray-400 transition-all">
                     <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
                         <i class="fas fa-cog text-yellow-400 text-sm"></i>
                     </div>
@@ -3284,24 +3284,21 @@ const HTML_TEMPLATES = {
             </nav>
 
             <!-- Sidebar Footer -->
-            <div class="pt-4 border-t border-gray-200 dark:border-white/[0.06] space-y-1">
-                <a href="https://t.me/srvpnshop" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-500 dark:text-gray-400 transition-all">
-                    <i class="fab fa-telegram text-sm"></i>
-                    <span class="text-xs">کانال</span>
-                </a>
-                <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 dark:hover:bg-white/[0.03] text-gray-500 dark:text-gray-400 transition-all">
-                    <i class="fab fa-github text-sm"></i>
-                    <span class="text-xs">گیت‌هاب</span>
-                </a>
+            <div class="pt-3 border-t border-gray-200 dark:border-white/[0.06]">
+                <div class="flex items-center gap-2 text-[10px] text-gray-400 dark:text-gray-500">
+                    <i class="fas fa-shield-alt text-peach-400"></i>
+                    <span>SRRoot Panel</span>
+                    <span class="mx-auto">v5.0.0.1</span>
+                </div>
             </div>
         </div>
     </aside>
     
     <!-- Sidebar Overlay (mobile) -->
-    <div id="sr-sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+    <div id="sr-sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[35] hidden lg:hidden" onclick="toggleSidebar()"></div>
 
-    <main class="max-w-6xl mx-auto px-4 py-6 pb-56 md:pb-32 lg:mr-60 transition-all duration-200">
-<div id="stat-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+    <main class="max-w-5xl mx-auto px-4 py-6 pb-56 md:pb-32 lg:mr-64 transition-all duration-200">
+<div id="stat-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
     <div class="bg-white dark:bg-dark-800/70 border border-gray-200 dark:border-white/[0.06] rounded-2xl p-4 shadow-sm hover-lift relative overflow-hidden group min-h-[80px]">
         <div class="flex items-start justify-between relative z-10">
             <div>
@@ -3378,15 +3375,15 @@ const HTML_TEMPLATES = {
         <div id="loading-state" class="text-center py-12">
             <span class="text-gray-500 dark:text-gray-400">در حال بارگذاری کاربران...</span>
         </div>
-        <div class="mb-4 flex flex-col md:flex-row gap-2 justify-between items-center bg-white dark:bg-dark-800/70 border border-gray-200 dark:border-white/[0.06] rounded-2xl p-3">
+        <div class="mb-4 flex flex-col md:flex-row gap-2 justify-between items-stretch md:items-center bg-white dark:bg-dark-800/70 border border-gray-200 dark:border-white/[0.06] rounded-2xl p-3">
             <div class="relative w-full md:w-80">
-                <input type="text" id="search-input" oninput="filterAndRenderUsers()" placeholder="جستجوی نام کاربری یا UUID..." class="w-full pl-3 pr-8 py-1.5 bg-gray-50 dark:bg-[#14142b] border border-gray-300 dark:border-[#1f1f3a] rounded-md focus:outline-none focus:ring-2 focus:ring-peach-500 text-xs">
+                <input type="text" id="search-input" oninput="filterAndRenderUsers()" placeholder="جستجوی نام کاربری یا UUID..." class="w-full pl-3 pr-8 py-2 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-white/[0.08] rounded-xl focus:outline-none focus:ring-2 focus:ring-peach-500/50 text-xs">
                 <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-gray-400">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
             </div>
             <div class="flex items-center gap-2 w-full md:w-auto">
-                <select id="filter-status" onchange="filterAndRenderUsers()" class="flex-1 min-w-0 px-2 py-1.5 bg-gray-50 dark:bg-[#14142b] border border-gray-300 dark:border-[#1f1f3a] rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-peach-500 text-gray-700 dark:text-zinc-300 cursor-pointer truncate">
+                <select id="filter-status" onchange="filterAndRenderUsers()" class="flex-1 min-w-0 px-3 py-2 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-white/[0.08] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-peach-500/50 text-gray-700 dark:text-zinc-300 cursor-pointer truncate">
                     <option value="all">🔍 همه</option>
 					<option value="active">✅ فعال</option>
                     <option value="inactive">❌ غیرفعال</option>
@@ -3394,7 +3391,7 @@ const HTML_TEMPLATES = {
                     <option value="offline">💤 آفلاین</option>
                     <option value="expired">⏳ منقضی</option>
                 </select>
-                <select id="sort-users" onchange="filterAndRenderUsers()" class="flex-1 min-w-0 px-2 py-1.5 bg-gray-50 dark:bg-[#14142b] border border-gray-300 dark:border-[#1f1f3a] rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-peach-500 text-gray-700 dark:text-zinc-300 cursor-pointer truncate">
+                <select id="sort-users" onchange="filterAndRenderUsers()" class="flex-1 min-w-0 px-3 py-2 bg-gray-50 dark:bg-dark-700 border border-gray-300 dark:border-white/[0.08] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-peach-500/50 text-gray-700 dark:text-zinc-300 cursor-pointer truncate">
                     <option value="newest">📅 جدیدترین</option>
                     <option value="name">🔤 نام کاربری (الفبا)</option>
                     <option value="usage-desc">📊 بیشترین مصرف</option>
@@ -3414,7 +3411,7 @@ const HTML_TEMPLATES = {
 				</button>
 			</div>
 		</div>
-        <div id="users-table-container" class="hidden overflow-x-auto border border-gray-200 dark:border-white/[0.06] rounded-md bg-white dark:bg-dark-800">
+        <div id="users-table-container" class="hidden overflow-x-auto border border-gray-200 dark:border-white/[0.06] rounded-2xl bg-white dark:bg-dark-800/70">
             <table class="w-full text-right border-collapse">
                 <thead>
                     <tr class="bg-gray-100 dark:bg-zinc-900/50 border-b border-gray-200 dark:border-white/[0.06] text-xs text-gray-500 dark:text-gray-400 text-center leading-tight">
@@ -3455,18 +3452,32 @@ const HTML_TEMPLATES = {
     function toggleSidebar() {
         const sidebar = document.getElementById('sr-sidebar');
         const overlay = document.getElementById('sr-sidebar-overlay');
-        sidebar.classList.toggle('translate-x-full');
-        overlay.classList.toggle('hidden');
+        const isHidden = sidebar.classList.contains('translate-x-full');
+        if (isHidden) {
+            // Opening on mobile - expand to full height
+            if (window.innerWidth < 1024) {
+                sidebar.style.top = '0';
+                sidebar.style.height = '100vh';
+            }
+            sidebar.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+        } else {
+            // Closing - restore desktop position
+            sidebar.style.top = '';
+            sidebar.style.height = '';
+            sidebar.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+        }
     }
     function scrollToSection(id) {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // Update active nav
         document.querySelectorAll('.nav-link').forEach(l => {
-            l.classList.remove('bg-peach-500/10', 'text-peach-500', 'border-r-2', 'border-peach-500');
+            l.classList.remove('bg-peach-500/10', 'text-peach-500', 'shadow-sm', 'shadow-peach-500/10');
             l.classList.add('hover:bg-white/5', 'dark:hover:bg-white/[0.03]', 'text-gray-600', 'dark:text-gray-400');
         });
-        event.currentTarget.classList.add('bg-peach-500/10', 'text-peach-500', 'border-r-2', 'border-peach-500');
+        event.currentTarget.classList.add('bg-peach-500/10', 'text-peach-500', 'shadow-sm', 'shadow-peach-500/10');
         event.currentTarget.classList.remove('hover:bg-white/5', 'dark:hover:bg-white/[0.03]', 'text-gray-600', 'dark:text-gray-400');
         // Close sidebar on mobile
         if (window.innerWidth < 1024) toggleSidebar();
@@ -3478,8 +3489,14 @@ const HTML_TEMPLATES = {
     }
     // Auto-close sidebar on resize to desktop
     window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('sr-sidebar');
         if (window.innerWidth >= 1024) {
-            document.getElementById('sr-sidebar').classList.remove('translate-x-full');
+            sidebar.style.top = '';
+            sidebar.style.height = '';
+            sidebar.classList.remove('translate-x-full');
+            document.getElementById('sr-sidebar-overlay').classList.add('hidden');
+        } else {
+            sidebar.classList.add('translate-x-full');
             document.getElementById('sr-sidebar-overlay').classList.add('hidden');
         }
     });
