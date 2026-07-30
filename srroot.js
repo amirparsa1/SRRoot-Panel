@@ -2855,9 +2855,9 @@ const HTML_TEMPLATES = {
     <title>دسترسی به پـنـل</title>
     ${COMMON_HEAD}
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4" style="background: #0f0b07;">
     <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-8 text-center flex flex-col items-center gap-4">
-        <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full mb-2">
+        <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full mb-2" style="background: linear-gradient(135deg, #D4A853, #B8912F) !important; color: white !important;">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         </div>
         <h2 class="text-xl font-bold text-gray-900 dark:text-white">ورود به پـنـل مدیریت</h2>
@@ -2880,20 +2880,26 @@ const HTML_TEMPLATES = {
     <title>تعریف رمز عبور پـنـل</title>
     ${COMMON_HEAD}
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6">
-        <h2 class="text-xl font-bold mb-2 text-center text-emerald-600 dark:text-emerald-400">تنظیم رمز عبور جدید</h2>
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4" style="background: #0f0b07;">
+    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6" style="background: linear-gradient(135deg, rgba(212,168,83,0.05), rgba(44,24,16,0.95)); border-color: rgba(212,168,83,0.2);">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #D4A853, #B8912F, #D4A853); border-radius: 8px 8px 0 0;"></div>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: linear-gradient(135deg, #D4A853, #B8912F); border-radius: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(212,168,83,0.3);">
+                <span style="font-size: 28px;">🏛️</span>
+            </div>
+        </div>
+        <h2 class="text-xl font-bold mb-2 text-center text-emerald-600 dark:text-emerald-400" style="color: #D4A853 !important;">تنظیم رمز عبور جدید</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">این اولین ورود شما به پـنـل مدیریت است. لطفاً رمز عبور خود را تعیین کنید.</p>
         <form onsubmit="handleSetup(event)" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium mb-1.5">رمز عبور</label>
-                <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" required minlength="4">
+                <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" style="background: #1a1208 !important; border-color: rgba(212,168,83,0.2) !important; color: #F5E6D3 !important;" required minlength="4">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1.5">تکرار رمز عبور</label>
-                <input type="password" id="confirm-password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" required minlength="4">
+                <input type="password" id="confirm-password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" style="background: #1a1208 !important; border-color: rgba(212,168,83,0.2) !important; color: #F5E6D3 !important;" required minlength="4">
             </div>
-            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold">ثبت و ورود</button>
+            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold" style="background: linear-gradient(135deg, #D4A853, #B8912F) !important; border: none !important; color: white !important;">ثبت و ورود</button>
         </form>
     </div>
     ${COMMON_TOAST_HTML}
@@ -2943,16 +2949,22 @@ const HTML_TEMPLATES = {
     <title>ورود به پـنـل مدیریت</title>
     ${COMMON_HEAD}
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6">
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4" style="background: #0f0b07;">
+    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6" style="background: linear-gradient(135deg, rgba(212,168,83,0.05), rgba(44,24,16,0.95)); border-color: rgba(212,168,83,0.2);">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #D4A853, #B8912F, #D4A853); border-radius: 8px 8px 0 0;"></div>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: linear-gradient(135deg, #D4A853, #B8912F); border-radius: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(212,168,83,0.3);">
+                <span style="font-size: 28px;">🏛️</span>
+            </div>
+        </div>
         <div id="login-section">
-            <h2 class="text-xl font-bold mb-6 text-center text-emerald-600 dark:text-emerald-400">ورود به پـنـل مدیریت</h2>
+            <h2 class="text-xl font-bold mb-6 text-center text-emerald-600 dark:text-emerald-400" style="color: #D4A853 !important; text-shadow: 0 0 20px rgba(212,168,83,0.3);">ورود به پـنـل مدیریت</h2>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1.5">رمز عبور</label>
-                    <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" required>
+                    <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" style="background: #1a1208 !important; border-color: rgba(212,168,83,0.2) !important; color: #F5E6D3 !important;" required>
                 </div>
-                <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold">ورود</button>
+                <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold" style="background: linear-gradient(135deg, #D4A853, #B8912F) !important; border: none !important; color: white !important;">ورود</button>
             </form>
             <div class="mt-4 text-center">
                 <button onclick="toggleRecovery(true)" class="text-xs text-emerald-500 hover:text-emerald-600 transition font-medium">بازیابی رمز پـنـل</button>
