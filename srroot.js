@@ -3068,367 +3068,238 @@ const HTML_TEMPLATES = {
     </script>
     ${COMMON_HEAD}
     <style>
+* { font-family: 'Vazirmatn', sans-serif; }
+.dark input[type="checkbox"] { filter: invert(1) hue-rotate(180deg); }
 
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f3f4f6; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+.dark ::-webkit-scrollbar-track { background: #1a1a1a; }
+.dark ::-webkit-scrollbar-thumb { background: #404040; }
+* { scrollbar-width: thin; scrollbar-color: #d1d5db #f3f4f6; }
+.dark * { scrollbar-color: #404040 #1a1a1a; }
 
-body {
+/* Dark theme - warm dark */
+.dark { background: #121212; color: #e0e0e0; }
+.dark body { background: #121212; color: #e0e0e0; }
 
-font-family: 'Vazirmatn', sans-serif;
-
-background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-
-min-height: 100vh;
-
-overflow-x: hidden;
-
+/* Warm accent color */
+:root {
+    --accent: #FF6B35;
+    --accent-light: #FF8C61;
+    --accent-dark: #E55A2B;
 }
 
-.bg-animated {
-
-position: fixed;
-
-top: 0;
-
-left: 0;
-
-width: 100%;
-
-height: 100%;
-
-z-index: -1;
-
-overflow: hidden;
-
+/* Header */
+.header-clean {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 24px;
+}
+.dark .header-clean {
+    background: #1a1a1a;
+    border-bottom-color: #2a2a2a;
 }
 
-.bg-animated::before {
+/* Cards */
+.card-clean {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s ease;
+}
+.card-clean:hover { border-color: #d1d5db; }
+.dark .card-clean {
+    background: #1e1e1e;
+    border-color: #2a2a2a;
+}
+.dark .card-clean:hover { border-color: #3a3a3a; }
 
-content: '';
+/* Stat cards */
+.stat-clean {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+}
+.dark .stat-clean {
+    background: #1e1e1e;
+    border-color: #2a2a2a;
+}
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+.stat-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+.dark .stat-label { color: #9ca3af; }
 
-position: absolute;
+/* Buttons */
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.btn-primary:hover { background: var(--accent-dark); }
 
-top: -50%;
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-secondary:hover { background: #e5e7eb; }
+.dark .btn-secondary {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #3a3a3a;
+}
+.dark .btn-secondary:hover { background: #3a3a3a; }
 
-left: -50%;
-
-width: 200%;
-
-height: 200%;
-
-background: radial-gradient(circle, rgba(0,229,255,0.1) 0%, transparent 50%);
-
-animation: rotate 20s linear infinite;
-
+/* Inputs */
+.input-clean {
+    width: 100%;
+    padding: 10px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #111827;
+    transition: all 0.2s ease;
+}
+.input-clean:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #ffffff;
+}
+.dark .input-clean {
+    background: #1e1e1e;
+    border-color: #2a2a2a;
+    color: #e0e0e0;
+}
+.dark .input-clean:focus {
+    border-color: var(--accent);
+    background: #252525;
 }
 
-@keyframes rotate {
-
-from { transform: rotate(0deg); }
-
-to { transform: rotate(360deg); }
-
+/* Table */
+.table-clean {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
 }
-
-.glass-card {
-
-background: rgba(255, 255, 255, 0.05);
-
-backdrop-filter: blur(20px);
-
--webkit-backdrop-filter: blur(20px);
-
-border: 1px solid rgba(255, 255, 255, 0.1);
-
-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
+.dark .table-clean {
+    background: #1e1e1e;
+    border-color: #2a2a2a;
 }
-
-.glass-card:hover {
-
-background: rgba(255, 255, 255, 0.08);
-
-border-color: rgba(0, 229, 255, 0.3);
-
-box-shadow: 0 8px 32px rgba(0, 229, 255, 0.2);
-
+.table-header {
+    background: #f9fafb;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
 }
-
-.neon-text {
-
-text-shadow: 0 0 10px rgba(0, 229, 255, 0.8),
-
-0 0 20px rgba(0, 229, 255, 0.6),
-
-0 0 30px rgba(0, 229, 255, 0.4);
-
+.dark .table-header {
+    background: #252525;
+    color: #9ca3af;
+    border-bottom-color: #2a2a2a;
 }
-
-.neon-border {
-
-box-shadow: 0 0 10px rgba(0, 229, 255, 0.5),
-
-inset 0 0 10px rgba(0, 229, 255, 0.1);
-
-}
-
-.btn-gradient {
-
-background: linear-gradient(135deg, #00e5ff 0%, #b44aff 100%);
-
-transition: all 0.3s ease;
-
-position: relative;
-
-overflow: hidden;
-
-}
-
-.btn-gradient::before {
-
-content: '';
-
-position: absolute;
-
-top: 0;
-
-left: -100%;
-
-width: 100%;
-
-height: 100%;
-
-background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-
-transition: left 0.5s ease;
-
-}
-
-.btn-gradient:hover::before {
-
-left: 100%;
-
-}
-
-.btn-gradient:hover {
-
-transform: translateY(-2px);
-
-box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4);
-
-}
-
-.stat-card {
-
-background: linear-gradient(135deg, rgba(0, 229, 255, 0.1) 0%, rgba(180, 74, 255, 0.1) 100%);
-
-border: 1px solid rgba(0, 229, 255, 0.2);
-
-transition: all 0.3s ease;
-
-position: relative;
-
-overflow: hidden;
-
-}
-
-.stat-card::before {
-
-content: '';
-
-position: absolute;
-
-top: -50%;
-
-right: -50%;
-
-width: 200%;
-
-height: 200%;
-
-background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
-
-opacity: 0;
-
-transition: opacity 0.3s ease;
-
-}
-
-.stat-card:hover::before {
-
-opacity: 1;
-
-}
-
-.stat-card:hover {
-
-transform: translateY(-5px);
-
-border-color: rgba(0, 229, 255, 0.5);
-
-box-shadow: 0 10px 40px rgba(0, 229, 255, 0.3);
-
-}
-
-.table-container {
-
-background: rgba(255, 255, 255, 0.03);
-
-backdrop-filter: blur(10px);
-
-border: 1px solid rgba(255, 255, 255, 0.1);
-
-}
-
 .table-row {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background 0.15s ease;
+}
+.table-row:hover { background: #f9fafb; }
+.dark .table-row { border-bottom-color: #2a2a2a; }
+.dark .table-row:hover { background: #252525; }
 
-transition: all 0.2s ease;
-
-border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
+/* Progress bars */
+.progress-clean {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.dark .progress-clean { background: #2a2a2a; }
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    border-radius: 3px;
+    transition: width 0.3s ease;
 }
 
-.table-row:hover {
-
-background: rgba(0, 229, 255, 0.05);
-
-transform: scale(1.01);
-
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
 }
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+.dark .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.dark .badge-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.dark .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
-.progress-bar {
-
-background: linear-gradient(90deg, #00e5ff, #b44aff);
-
-border-radius: 10px;
-
-position: relative;
-
-overflow: hidden;
-
+/* Icon buttons */
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
-
-.progress-bar::after {
-
-content: '';
-
-position: absolute;
-
-top: 0;
-
-left: 0;
-
-width: 100%;
-
-height: 100%;
-
-background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-
-animation: shimmer 2s infinite;
-
+.icon-btn:hover { background: #f3f4f6; color: #111827; }
+.dark .icon-btn {
+    background: #1e1e1e;
+    border-color: #2a2a2a;
+    color: #9ca3af;
 }
+.dark .icon-btn:hover { background: #2a2a2a; color: #e0e0e0; }
 
-@keyframes shimmer {
+/* Accent text */
+.text-accent { color: var(--accent); }
+.dark .text-accent { color: var(--accent-light); }
 
-0% { transform: translateX(-100%); }
+/* Zoom removed for performance */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
 
-100% { transform: translateX(100%); }
-
-}
-
-::-webkit-scrollbar {
-
-width: 8px;
-
-height: 8px;
-
-}
-
-::-webkit-scrollbar-track {
-
-background: rgba(255, 255, 255, 0.05);
-
-border-radius: 10px;
-
-}
-
-::-webkit-scrollbar-thumb {
-
-background: linear-gradient(135deg, #00e5ff, #b44aff);
-
-border-radius: 10px;
-
-}
-
-::-webkit-scrollbar-thumb:hover {
-
-background: linear-gradient(135deg, #00c8ff, #9a3aff);
-
-}
-
-.modal-enter {
-
-animation: modalSlideIn 0.3s ease-out;
-
-}
-
-@keyframes modalSlideIn {
-
-from {
-
-opacity: 0;
-
-transform: scale(0.9) translateY(-20px);
-
-}
-
-to {
-
-opacity: 1;
-
-transform: scale(1) translateY(0);
-
-}
-
-}
-
-input:focus, select:focus, textarea:focus {
-
-outline: none;
-
-border-color: #00e5ff !important;
-
-box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
-
-}
-
-.badge-pulse {
-
-animation: badgePulse 2s ease-in-out infinite;
-
-}
-
-@keyframes badgePulse {
-
-0%, 100% { transform: scale(1); }
-
-50% { transform: scale(1.1); }
-
-}
-
-.spinner {
-
-animation: spin 1s linear infinite;
-
-}
-
-@keyframes spin {
-
-from { transform: rotate(0deg); }
-
-to { transform: rotate(360deg); }
-
-}
-
-
+@media (min-width: 769px) { header, main { zoom: 1.18; } }
+@media (max-width: 768px) { header, main { zoom: 0.90; } }
 </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen transition-colors duration-200 sr-pattern">
@@ -3438,7 +3309,7 @@ to { transform: rotate(360deg); }
                 <button class="sr-menu-btn" onclick="srToggleSidebar()" title="منو">☰</button>
                 <h1 class="text-lg font-bold flex items-center gap-2" dir="ltr">
                     🏛️ SRRoot Panel
-                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v7.0.0</span>
+                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v8.0.0</span>
                 </h1>
                 <div class="flex items-center gap-3 bg-gray-100 dark:bg-zinc-800/60 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-800/80 shadow-sm flex-shrink-0 w-fit">
                     <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-all transform hover:scale-125 duration-200 flex-shrink-0" title="GitHub">
@@ -3594,8 +3465,8 @@ to { transform: rotate(360deg); }
     </script>
 
     <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32 sr-main-offset">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="stat-card rounded-2xl p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="stat-clean">
         <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-violet-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
         <div class="flex items-center justify-between relative z-10">
             <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">تعداد کل کاربران</span>
@@ -3674,18 +3545,18 @@ to { transform: rotate(360deg); }
     </div>
 </div>
         <div id="loading-state" class="text-center py-12">
-            <div class="inline-block w-12 h-12 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full spinner"></div>
-            <p class="text-gray-400 mt-4">در حال بارگذاری...</p>
+            <div class="inline-block w-10 h-10 border-3 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div>
+            <p class="text-gray-500 dark:text-gray-400 mt-3 text-sm">در حال بارگذاری...</p>
         </div>
-        <div class="glass-card rounded-2xl p-6 mb-6">
-            <div class="flex flex-col md:flex-row gap-4">
+        <div class="card-clean mb-5">
+            <div class="flex flex-col md:flex-row gap-3">
                 <div class="flex-1 relative">
-                    <input type="text" id="search-input" oninput="filterAndRenderUsers()" placeholder="جستجوی نام کاربری یا UUID..." class="w-full pl-12 pr-4 py-3 bg-black/30 border border-white/10 rounded-xl focus:border-cyan-500 text-sm transition-all">
-                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <input type="text" id="search-input" oninput="filterAndRenderUsers()" placeholder="جستجوی نام کاربری یا UUID..." class="input-clean pr-10">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <select id="filter-status" onchange="filterAndRenderUsers()" class="px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-sm focus:border-cyan-500 transition-all">
+                <select id="filter-status" onchange="filterAndRenderUsers()" class="input-clean md:w-auto">
                     <option value="all">🔍 همه</option>
                     <option value="active">✅ فعال</option>
                     <option value="inactive">❌ غیرفعال</option>
@@ -3693,7 +3564,7 @@ to { transform: rotate(360deg); }
                     <option value="offline">💤 آفلاین</option>
                     <option value="expired">⏳ منقضی</option>
                 </select>
-                <select id="sort-users" onchange="filterAndRenderUsers()" class="px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-sm focus:border-cyan-500 transition-all">
+                <select id="sort-users" onchange="filterAndRenderUsers()" class="input-clean md:w-auto">
                     <option value="newest">📅 جدیدترین</option>
                     <option value="name">🔤 نام کاربری</option>
                     <option value="usage-desc">📊 بیشترین مصرف</option>
@@ -3705,20 +3576,20 @@ to { transform: rotate(360deg); }
 		<div class="flex items-center justify-between mb-4">
 			<h2 class="text-lg font-bold text-gray-800 dark:text-zinc-200">لیست کاربران</h2>
 			<div class="flex items-center gap-2">
-				<button onclick="quickCreateUser(this)" title="افزودن سریع" class="btn-gradient px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2">
-					<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+				<button onclick="quickCreateUser(this)" title="افزودن سریع" class="btn-secondary flex items-center gap-2">
+					<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
 					سریع
 				</button>
-				<button onclick="openCreateModal()" title="افزودن کاربر" class="btn-gradient px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+				<button onclick="openCreateModal()" title="افزودن کاربر" class="btn-primary flex items-center gap-2">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
 					کاربر جدید
 				</button>
 			</div>
 		</div>
-        <div id="users-table-container" class="hidden table-container rounded-2xl overflow-hidden">
+        <div id="users-table-container" class="hidden table-clean overflow-hidden">
             <table class="w-full text-right border-collapse">
                 <thead>
-                    <tr class="border-b border-white/10 bg-white/5">
+                    <tr class="table-header">
                         <th class="py-1 px-1.5 w-10 text-center"><input type="checkbox" id="select-all-users" onchange="toggleSelectAllUsers(this)" class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-zinc-700 text-emerald-600 bg-white dark:bg-zinc-800 checked:bg-emerald-600 checked:border-emerald-600 focus:ring-emerald-500/50 focus:ring-offset-0 transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95"></th>
                         <th class="py-1 px-2 border-r border-gray-200 dark:border-zinc-800">اطلاعات</th>
                         <th class="py-1 px-2 border-r border-gray-200 dark:border-zinc-800">عملیات</th>
@@ -3748,14 +3619,14 @@ to { transform: rotate(360deg); }
                 <tbody id="users-tbody" class="divide-y divide-gray-150 dark:divide-amoled-border text-sm"></tbody>
             </table>
         </div>
-        <div id="empty-state" class="hidden text-center py-16">
-            <div class="inline-block p-6 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-full mb-4">
-                <svg class="w-16 h-16 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div id="empty-state" class="hidden text-center py-16 card-clean">
+            <div class="inline-block p-4 bg-red-50 dark:bg-red-900/20 rounded-full mb-3">
+                <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                 </svg>
             </div>
-            <p class="text-xl font-bold text-red-400">کاربری وجود ندارد</p>
-            <p class="text-gray-400 mt-2">برای ساخت اولین کاربر روی دکمه «+» کلیک کنید</p>
+            <p class="text-lg font-bold text-gray-900 dark:text-white">کاربری وجود ندارد</p>
+            <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">برای ساخت اولین کاربر روی دکمه «+» کلیک کنید</p>
         </div>
     </main>
 <div id="usage-warning-modal" class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
@@ -6234,7 +6105,7 @@ async function testUserSocksProxy() {
                 window.location.reload();
             }
         }
-const CURRENT_VERSION = '7.0.0';
+const CURRENT_VERSION = '8.0.0';
 const UPDATE_FIX = "constsCURRENT_VERSION='d.d.d'";
 		window.autoUpdateStatusCache = false;
 		async function checkAutoUpdateSetup() {
