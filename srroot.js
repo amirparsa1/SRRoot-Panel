@@ -3345,32 +3345,8 @@ const HTML_TEMPLATES = {
         </button>
     </div>
 </div>
-<div id="free-panel-warning-modal" class="fixed inset-0 z-[85] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border-4 border-red-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 mb-4 shadow-inner">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-        </div>
-        <h3 class="font-black text-xl text-gray-900 dark:text-white mb-2">🚨 🛑 اخطار 🛑 🚨</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed font-medium">
-این پـنـل کاملاً <span class="text-red-500 font-bold">رایگان</span> است. هرگونه <span class="text-amber-500 font-bold">فروش پـنـل یا کـانفـیگ‌های آن</span>، و همچنین <span class="text-amber-500 font-bold">انتشار کـانفـیگ‌ها برای گرفتن ممبر و بازدید</span>، مصداق <span class="text-red-500 font-bold">کلاه‌برداری و رفتاری دور از انسانیت و شرافت</span> است. لطفاً از این ابزار <span class="text-green-500 font-bold">فقط به صورت شخصی و رایگان</span> استفاده کنید.        </p>
-        <button onclick="closeFreePanelWarning()" class="w-full py-3.5 bg-transparent border-2 border-green-800 text-green-900 hover:bg-green-800 hover:text-white dark:border-green-800 dark:text-green-700 dark:hover:bg-green-900 dark:hover:text-white font-black rounded-md text-sm transition duration-300 shadow-lg">
-            تأیید و موافقت
-        </button>
-    </div>
-</div>
-<div id="global-message-modal" class="fixed inset-0 z-[86] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-blue-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 mb-4 shadow-inner">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        </div>
-        <h3 class="font-black text-xl text-gray-900 dark:text-white mb-4">پیام همگانی</h3>
-        <div id="global-message-content" class="mb-6 w-full text-center">
-        </div>
-        <button id="global-message-close-btn" class="w-full py-3.5 bg-transparent border-2 border-blue-600 text-blue-700 hover:bg-blue-900/20 hover:text-blue-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-900/40 dark:hover:text-blue-400 font-black rounded-md text-sm transition duration-300 shadow-lg">
-            متوجه شدم
-        </button>
-    </div>
-</div>
+
+
 <div id="online-counter-warning-modal" class="fixed inset-0 z-[87] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
     <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-red-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 mb-4 shadow-inner">
@@ -5219,8 +5195,7 @@ function setModalState(modalId, show) {
 		}
 		function closeUsageWarning() { setModalState('usage-warning-modal', false); }
 		function openUsageWarning() { setModalState('usage-warning-modal', true); }
-		function closeFreePanelWarning() { setModalState('free-panel-warning-modal', false); }
-		function closeOnlineCounterWarning() { setModalState('online-counter-warning-modal', false); }
+				function closeOnlineCounterWarning() { setModalState('online-counter-warning-modal', false); }
 		function openOnlineCounterWarning() { setModalState('online-counter-warning-modal', true); }
 		function closeConfigCountWarning() { setModalState('config-count-warning-modal', false); }
 		function openConfigCountWarning() { setModalState('config-count-warning-modal', true); }
