@@ -3065,7 +3065,7 @@ const HTML_TEMPLATES = {
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex flex-row flex-wrap justify-center items-center gap-3 w-full md:w-auto">
                 <h1 class="text-lg font-bold flex items-center gap-2" dir="ltr">
-                    ⚡️ Z E U S
+                    🔥 SRRoot Panel
                     <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">v1.5.10</span>
                 </h1>
                 <div class="flex items-center gap-3 bg-gray-100 dark:bg-zinc-800/60 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-800/80 shadow-sm flex-shrink-0 w-fit">
@@ -3405,7 +3405,7 @@ const HTML_TEMPLATES = {
                                     <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                     </span>
-                                    <input type="text" id="input-name" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')" placeholder="Z_E_U_S" maxlength="32" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition" required>
+                                    <input type="text" id="input-name" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')" placeholder="SR_USER" maxlength="32" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition" required>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2.5">
