@@ -3374,84 +3374,35 @@ input[type="number"] { -moz-appearance: textfield; }
         </div>
 
 
-    <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32 sr-main-offset">
+    <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <div class="stat-clean">
-        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-violet-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
-        <div class="flex items-center justify-between relative z-10">
-            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">تعداد کل کاربران</span>
-            <div class="p-1 bg-violet-50 dark:bg-violet-950/30 text-violet-600 dark:text-violet-400 rounded-md flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-            </div>
-        </div>
-        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
-            <div class="text-lg font-black text-gray-900 dark:text-zinc-100 transition-all leading-none" id="stat-total-users">0</div>
-            <span class="text-[9px] text-violet-500 dark:text-violet-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none mb-0.5">
-                <span class="w-1 h-1 bg-violet-500 rounded-full animate-ping"></span>
-                کل کاربران تعریف شده
-            </span>
-        </div>
+        <div class="stat-label">کل کاربران</div>
+        <div class="stat-value text-gray-900 dark:text-white" id="stat-total-users">0</div>
     </div>
-    <div class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-green-400 dark:hover:border-green-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
-        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-green-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
-        <div class="flex items-center justify-between relative z-10">
-            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap flex items-center gap-1">
-                <span>کاربران فعال (آنلاین)</span>
-                <button type="button" onclick="openOnlineCounterWarning();" class="text-red-500 hover:text-red-400 transition-transform hover:scale-110 cursor-pointer inline-flex items-center" title="هشدار">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                </button>
-            </span>
-            <div class="p-1 bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 rounded-md flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            </div>
-        </div>
-        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
-            <div class="text-lg font-black text-green-600 dark:text-green-400 transition-all leading-none" id="stat-active-users">0</div>
-            <span class="text-[9px] text-green-500 dark:text-green-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none mb-0.5">
-                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                متصل در این لحظه
-            </span>
-        </div>
+    <div class="stat-clean">
+        <div class="stat-label">کاربران فعال (آنلاین)</div>
+        <div class="stat-value text-green-600 dark:text-green-400" id="stat-active-users">0</div>
+        <button type="button" onclick="openOnlineCounterWarning();" class="text-red-500 hover:text-red-400 text-xs mt-1 cursor-pointer inline-flex items-center gap-1" title="هشدار">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            <span>توجه</span>
+        </button>
     </div>
-    <div id="card-cf-requests" class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-orange-400 dark:hover:border-orange-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
-        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-orange-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
-        <div class="flex items-center justify-between relative z-10">
-            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">ریکوئست‌های روزانه</span>
-            <div class="p-1 bg-orange-50 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400 rounded-md flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
-            </div>
+    <div class="stat-clean">
+        <div class="stat-label">ریکوئست‌های روزانه</div>
+        <div class="flex items-baseline gap-1">
+            <div class="stat-value text-orange-600 dark:text-orange-400" id="stat-cf-requests">0</div>
+            <span class="text-xs text-gray-400">/100k</span>
         </div>
-        <div class="relative z-10 min-w-0 flex-1 w-full mt-0.5">
-            <div class="flex items-end justify-between w-full mb-1.5">
-                <div class="flex items-baseline gap-1">
-                    <span class="text-lg font-black text-orange-600 dark:text-orange-400 transition-all leading-none" id="stat-cf-requests">0</span>
-                    <span class="text-[9px] font-bold text-gray-400 mr-0.5 leading-none">/ 100k</span>
-                    <button id="cf-warning-btn" onclick="openUsageWarning()" class="hidden flex items-center justify-center w-3 h-3 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 rounded-full font-bold text-[9px] animate-bounce shadow-sm border border-red-300 dark:border-red-700 mr-1 leading-none">!</button>
-                </div>
-                <span class="text-[9px] text-orange-500 dark:text-orange-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none">
-                    <span>Total: <span id="stat-cf-total">0</span></span>
-                </span>
-            </div>
-            <div class="w-full bg-gray-100 dark:bg-zinc-800 rounded-full h-1">
-                <div id="stat-cf-progress" class="bg-orange-500 h-1 rounded-full transition-all duration-500" style="width: 0%"></div>
-            </div>
+        <button id="cf-warning-btn" onclick="openUsageWarning()" class="hidden text-red-500 text-xs mt-1">⚠️ هشدار</button>
+        <div class="progress-clean mt-2">
+            <div id="stat-cf-progress" class="progress-fill" style="width: 0%"></div>
         </div>
+        <div class="text-[10px] text-gray-400 mt-1">Total: <span id="stat-cf-total">0</span></div>
     </div>
-    <div class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-emerald-400 dark:hover:border-emerald-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
-        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-emerald-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
-        <div class="flex items-center justify-between relative z-10">
-            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">ترافیک مصرفی سرور</span>
-            <div class="p-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 rounded-md flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            </div>
-        </div>
-        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
-            <div class="text-lg font-black text-emerald-600 dark:text-emerald-400 transition-all whitespace-nowrap leading-none" id="stat-total-usage">0 GB</div>
-            <span class="text-[9px] text-emerald-500 dark:text-emerald-400 flex items-center gap-0.5 font-medium whitespace-nowrap leading-none mb-0.5">
-                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
-                مجموع
-            </span>
-        </div>
+    <div class="stat-clean">
+        <div class="stat-label">ترافیک مصرفی</div>
+        <div class="stat-value text-blue-600 dark:text-blue-400" id="stat-total-usage">0 GB</div>
     </div>
 </div>
         <div id="loading-state" class="text-center py-12">
