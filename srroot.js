@@ -38,7 +38,7 @@ async function readJsonBody(request) {
 }
 async function fetchWithFallback(path, options = {}) {
 	const githubUrl = `https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/${path}`;
-	const staticUrl = `https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/${path}`;
+	const staticUrl = `https://srroot-files.surge.sh/${path}`;
 	try {
 		const res = await fetch(githubUrl, options);
 		if (res.ok) return res;
@@ -314,50 +314,6 @@ async function replaceBrokenProxy(username, env, oldProxy) {
 }
 export default {
 	async fetch(request, env, ctx) {
-		// Handle CORS preflight
-		if (request.method === "OPTIONS") {
-			return new Response(null, {
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-					"Access-Control-Allow-Headers": "Content-Type, Authorization",
-					"Access-Control-Max-Age": "86400",
-				},
-			});
-		}
-		// Handle CORS preflight
-		if (request.method === "OPTIONS") {
-			return new Response(null, {
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-					"Access-Control-Allow-Headers": "Content-Type, Authorization",
-					"Access-Control-Max-Age": "86400",
-				},
-			});
-		}
-		// Handle CORS preflight
-		if (request.method === "OPTIONS") {
-			return new Response(null, {
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-					"Access-Control-Allow-Headers": "Content-Type, Authorization",
-					"Access-Control-Max-Age": "86400",
-				},
-			});
-		}
-		// Handle CORS preflight
-		if (request.method === "OPTIONS") {
-			return new Response(null, {
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-					"Access-Control-Allow-Headers": "Content-Type, Authorization",
-					"Access-Control-Max-Age": "86400",
-				},
-			});
-		}
 		if (!env.DB) {
 			return new Response("Database binding 'DB' is missing in Cloudflare Workers settings.", { status: 500 });
 		}
@@ -378,10 +334,7 @@ export default {
 				return await Router.handleSubscription(url, env);
 			}
 			if (url.pathname.startsWith("/api/")) {
-				const apiResponse = await Router.handleApi(request, url, env, ctx);
-		const apiHeaders = new Headers(apiResponse.headers);
-		apiHeaders.set("Access-Control-Allow-Origin", "*");
-		return new Response(apiResponse.body, { status: apiResponse.status, headers: apiHeaders });
+				return await Router.handleApi(request, url, env, ctx);
 			}
 			if (url.pathname === "/panel" || url.pathname === "/login") {
 				return await Router.handlePanel(request, env);
@@ -707,7 +660,7 @@ const Router = {
 			try {
 				const cfHeaders = {
 					"Authorization": "Bearer " + currentToken,
-					"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SRRoot/5.0"
+					"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SRRoot/1.0"
 				};
 				if (!currentAccountId) {
 					const accRes = await fetch("https://api.cloudflare.com/client/v4/accounts", { headers: cfHeaders });
@@ -1062,7 +1015,7 @@ const Router = {
 						const randomHex = Array.from(crypto.getRandomValues(new Uint8Array(6)))
 							.map(b => b.toString(16).padStart(2, "0"))
 							.join("");
-						finalUuid = `5352524F-4F54-5632-3030-${randomHex}`;
+						finalUuid = `50414e45-4c5f-5a45-5553-${randomHex}`;
 					}
 					const parsedUsedGb = parseFloat(used_gb);
 					const finalUsedGb = !isNaN(parsedUsedGb) ? parsedUsedGb : 0;
@@ -1183,7 +1136,7 @@ const DbService = {
 		return sessionToken === storedPasswordHash;
 	},
 	async sha256(message) {
-		const salt = "SRROOT_PANEL_SECURE_SALT_2026";
+		const salt = "SRROOT_SECURE_SALT_2026";
 		const msgBuffer = new TextEncoder().encode(message + salt);
 		const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
 		const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -1228,10 +1181,10 @@ const SubscriptionService = {
 			.map((p) => p.trim())
 			.filter((p) => p.length > 0);
 		const fp = user.fingerprint || "chrome";
-		const dynPath = encodeURIComponent("/stream/srvpnshop/" + ((user.uuid || "").split("-")[4] || "default"));
+		const dynPath = encodeURIComponent("/stream/SRRoot_Panel/" + ((user.uuid || "").split("-")[4] || "default"));
 		const links = [];
 		const m1 = decodeURIComponent("%E2%9A%A0%EF%B8%8F%D9%BE%D9%86%D9%84%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%20%D9%88%20%D8%BA%DB%8C%D8%B1%20%D9%82%D8%A7%D8%A8%D9%84%20%D9%81%D8%B1%D9%88%D8%B4%E2%9A%A0%EF%B8%8F");
-		const m2 = decodeURIComponent("%F0%9F%9A%80%40srvpnshop%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80");
+		const m2 = decodeURIComponent("%F0%9F%9A%80%40SRRoot_Panel%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80");
 		links.push("vl" + "e" + "ss://" + user.uuid + "@0.0.0.0:1?encryption=none&security=none&type=ws&host=" + host + "&path=" + dynPath + "#" + encodeURIComponent(m1));
 		links.push("vl" + "e" + "ss://" + user.uuid + "@0.0.0.0:1?encryption=none&security=none&type=ws&host=" + host + "&path=" + dynPath + "#" + encodeURIComponent(m2));
 		let remVol = "Unlimited";
@@ -1253,7 +1206,7 @@ const SubscriptionService = {
 		}
 		const infoRemark = "📊 remaining | \u200E" + remVol + " | \u200E" + remTime + " | \u200E" + remReq;
 		links.push("vl" + "e" + "ss://" + user.uuid + "@" + host + ":80?path=" + dynPath + "&security=none&encryption=none&host=" + host + "&fp=" + fp + "&type=ws#" + encodeURIComponent(infoRemark));
-		const rawPath = "/stream/srvpnshop/" + ((user.uuid || "").split("-")[4] || "default");
+		const rawPath = "/stream/SRRoot_Panel/" + ((user.uuid || "").split("-")[4] || "default");
 		let proxyList = [];
 		try {
 			if (user.user_socks5 && user.user_socks5.trim().startsWith("[")) {
@@ -1335,7 +1288,7 @@ const SubscriptionService = {
 				});
 			});
 		}
-		const noise = ["# System Update Feed: OK", "# Sync Code: " + Math.random().toString(36).slice(2, 10), "# Version: 5.0.0.1 - SRRoot Panel", "# Description: Secure Node Configurations", ""].join("\n");
+		const noise = ["# System Update Feed: OK", "# Sync Code: " + Math.random().toString(36).slice(2, 10), "# Version: 2.10.1", "# Description: Secure Node Configurations", ""].join("\n");
 		const plainContent = noise + links.join("\n");
 		const subContent = btoa(unescape(encodeURIComponent(plainContent)));
 		const downloadBytes = Math.floor((user.used_gb || 0) * 1073741824);
@@ -1736,7 +1689,7 @@ async function handlevIees(env, storedData = null, ctx = null, request = null) {
 			}
 			if (request) {
 				const reqUrl = new URL(request.url);
-				const expectedPath = "/stream/srvpnshop/" + ((user.uuid || "").split("-")[4] || "default");
+				const expectedPath = "/stream/SRRoot_Panel/" + ((user.uuid || "").split("-")[4] || "default");
 				if (reqUrl.pathname !== expectedPath) {
 					serverSock.close();
 					return;
@@ -2855,15 +2808,15 @@ const HTML_TEMPLATES = {
     <title>دسترسی به پـنـل</title>
     ${COMMON_HEAD}
 </head>
-<body class="dark" style="background: #0f0f0f; color: #e5e5e5;">
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-8 text-center flex flex-col items-center gap-4">
-        <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 rounded-full mb-2" style="background: linear-gradient(135deg, #D4A853, #B8912F) !important; color: white !important;">
+        <div class="p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-full mb-2">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         </div>
         <h2 class="text-xl font-bold text-gray-900 dark:text-white">ورود به پـنـل مدیریت</h2>
         <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mt-2">
             برای ورود به پـنـل، لطفاً عبارت 
-            <span class="inline-block px-2 py-1 bg-gray-100 dark:bg-amoled-input border border-gray-200 dark:border-zinc-800 rounded-md font-mono text-emerald-500 font-bold mx-1 shadow-sm" dir="ltr">/panel</span> 
+            <span class="inline-block px-2 py-1 bg-gray-100 dark:bg-amoled-input border border-gray-200 dark:border-zinc-800 rounded-md font-mono text-blue-500 font-bold mx-1 shadow-sm" dir="ltr">/panel</span> 
             را به انتهای آدرس مرورگر خود اضافه کنید.
         </p>
         <button onclick="window.location.href='/panel'" class="mt-4 w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition-colors duration-200 shadow-lg font-bold">
@@ -2880,26 +2833,20 @@ const HTML_TEMPLATES = {
     <title>تعریف رمز عبور پـنـل</title>
     ${COMMON_HEAD}
 </head>
-<body class="dark" style="background: #0f0f0f; color: #e5e5e5;">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6" style="background: linear-gradient(135deg, rgba(212,168,83,0.05), rgba(44,24,16,0.95)); border-color: rgba(212,168,83,0.2);">
-        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #D4A853, #B8912F, #D4A853); border-radius: 8px 8px 0 0;"></div>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: linear-gradient(135deg, #D4A853, #B8912F); border-radius: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(212,168,83,0.3);">
-                <span style="font-size: 28px;">🏛️</span>
-            </div>
-        </div>
-        <h2 class="text-xl font-bold mb-2 text-center text-emerald-600 dark:text-emerald-400" style="color: #D4A853 !important;">تنظیم رمز عبور جدید</h2>
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6">
+        <h2 class="text-xl font-bold mb-2 text-center text-blue-600 dark:text-blue-400">تنظیم رمز عبور جدید</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">این اولین ورود شما به پـنـل مدیریت است. لطفاً رمز عبور خود را تعیین کنید.</p>
         <form onsubmit="handleSetup(event)" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium mb-1.5">رمز عبور</label>
-                <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" style="background: #1a1208 !important; border-color: rgba(212,168,83,0.2) !important; color: #F5E6D3 !important;" required minlength="4">
+                <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-center font-mono" required minlength="4">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1.5">تکرار رمز عبور</label>
-                <input type="password" id="confirm-password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" style="background: #1a1208 !important; border-color: rgba(212,168,83,0.2) !important; color: #F5E6D3 !important;" required minlength="4">
+                <input type="password" id="confirm-password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-center font-mono" required minlength="4">
             </div>
-            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold" style="background: linear-gradient(135deg, #D4A853, #B8912F) !important; border: none !important; color: white !important;">ثبت و ورود</button>
+            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold">ثبت و ورود</button>
         </form>
     </div>
     ${COMMON_TOAST_HTML}
@@ -2949,25 +2896,19 @@ const HTML_TEMPLATES = {
     <title>ورود به پـنـل مدیریت</title>
     ${COMMON_HEAD}
 </head>
-<body class="dark" style="background: #0f0f0f; color: #e5e5e5;">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6" style="background: linear-gradient(135deg, rgba(212,168,83,0.05), rgba(44,24,16,0.95)); border-color: rgba(212,168,83,0.2);">
-        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #D4A853, #B8912F, #D4A853); border-radius: 8px 8px 0 0;"></div>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: linear-gradient(135deg, #D4A853, #B8912F); border-radius: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(212,168,83,0.3);">
-                <span style="font-size: 28px;">🏛️</span>
-            </div>
-        </div>
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6">
         <div id="login-section">
-            <h2 class="text-xl font-bold mb-6 text-center text-emerald-600 dark:text-emerald-400" style="color: #D4A853 !important; text-shadow: 0 0 20px rgba(212,168,83,0.3);">ورود به پـنـل مدیریت</h2>
+            <h2 class="text-xl font-bold mb-6 text-center text-blue-600 dark:text-blue-400">ورود به پـنـل مدیریت</h2>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-1.5">رمز عبور</label>
-                    <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-center font-mono" style="background: #1a1208 !important; border-color: rgba(212,168,83,0.2) !important; color: #F5E6D3 !important;" required>
+                    <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-center font-mono" required>
                 </div>
-                <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold" style="background: linear-gradient(135deg, #D4A853, #B8912F) !important; border: none !important; color: white !important;">ورود</button>
+                <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold">ورود</button>
             </form>
             <div class="mt-4 text-center">
-                <button onclick="toggleRecovery(true)" class="text-xs text-emerald-500 hover:text-emerald-600 transition font-medium">بازیابی رمز پـنـل</button>
+                <button onclick="toggleRecovery(true)" class="text-xs text-blue-500 hover:text-blue-600 transition font-medium">بازیابی رمز پـنـل</button>
             </div>
         </div>
         <div id="recovery-section" class="hidden">
@@ -3057,7 +2998,7 @@ const HTML_TEMPLATES = {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRRoot Panel</title>
+    <title>Z E U S</title>
 	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
     <script>
         const originalWarn = console.warn;
@@ -3068,279 +3009,64 @@ const HTML_TEMPLATES = {
     </script>
     ${COMMON_HEAD}
     <style>
-/* ================================================
-   SRRoot Panel - Minimal Warm Design
-   ================================================ */
-
-* {
-    font-family: 'Vazirmatn', sans-serif;
-    box-sizing: border-box;
-}
-
-.dark input[type="checkbox"] {
-    filter: invert(1) hue-rotate(180deg);
-}
-
-:root {
-    --bg: #0f0f0f;
-    --card: #1a1a1a;
-    --card-hover: #222222;
-    --border: #2a2a2a;
-    --text: #e5e5e5;
-    --text-muted: #888888;
-    --accent: #ff6b35;
-    --accent-hover: #e55a2b;
-}
-
-body {
-    background: var(--bg);
-    color: var(--text);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-}
-
-/* Header */
-header {
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-}
-
-header h1 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    margin: 0;
-}
-
-/* Main content */
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
-}
-
-/* Stat cards */
-.stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    transition: all 0.2s ease;
-}
-
-.stat-card:hover {
-    background: var(--card-hover);
-    border-color: var(--accent);
-}
-
-.stat-label {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.stat-value {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--text);
-}
-
-.stat-value.accent {
-    color: var(--accent);
-}
-
-/* Cards */
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 16px;
-}
-
-/* Buttons */
-button {
-    cursor: pointer;
-    border: none;
-    font-family: inherit;
-    transition: all 0.2s ease;
-}
-
-.btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.btn-primary {
-    background: var(--accent);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: var(--accent-hover);
-}
-
-.btn-secondary {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--border);
-}
-
-.btn-secondary:hover {
-    background: var(--card-hover);
-}
-
-/* Inputs */
-input, select {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 14px;
-    color: var(--text);
-    font-family: inherit;
-    transition: all 0.2s ease;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
-/* Table */
-table {
-    width: 100%;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-thead {
-    background: var(--bg);
-}
-
-th {
-    padding: 12px 16px;
-    text-align: right;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border);
-}
-
-td {
-    padding: 12px 16px;
-    font-size: 14px;
-    border-bottom: 1px solid var(--border);
-}
-
-tr:hover {
-    background: var(--card-hover);
-}
-
-/* Progress bar */
-.progress {
-    width: 100%;
-    height: 6px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 8px;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.3s ease;
-}
-
-/* Utilities */
-.flex { display: flex; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.gap-2 { gap: 8px; }
-.gap-3 { gap: 12px; }
-.gap-4 { gap: 16px; }
-.mb-4 { margin-bottom: 16px; }
-.mb-6 { margin-bottom: 24px; }
-.mt-2 { margin-top: 8px; }
-.text-sm { font-size: 14px; }
-.text-xs { font-size: 12px; }
-.font-bold { font-weight: 700; }
-.text-muted { color: var(--text-muted); }
-
-/* Grid */
-.grid { display: grid; gap: 16px; }
-.grid-4 { grid-template-columns: repeat(4, 1fr); }
-@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .grid-4 { grid-template-columns: 1fr; } }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-/* Animations */
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.animate-spin {
-    animation: spin 1s linear infinite;
-}
-
-/* Loading spinner */
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-}
-
-/* Badge */
-.badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.badge-success { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
-.badge-warning { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-.badge-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-
-/* Number inputs */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-</style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+		.dark input[type="checkbox"] {
+            filter: invert(1) hue-rotate(180deg);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3f4f6; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #000105; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #102040; 
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #172e5c;
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #d1d5db #f3f4f6;
+        }
+        .dark * {
+            scrollbar-color: #102040 #000105;
+        }
+        @media (min-width: 769px) {
+            header, main { zoom: 1.18; }
+        }
+        @media (max-width: 768px) {
+            header, main { zoom: 0.90; }
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen transition-colors duration-200 sr-pattern">
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen transition-colors duration-200">
     <header class="border-b border-gray-200 dark:border-amoled-border bg-white dark:bg-amoled-card px-4 py-4">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex flex-row flex-wrap justify-center items-center gap-3 w-full md:w-auto">
-                <button class="sr-menu-btn" onclick="srToggleSidebar()" title="منو">☰</button>
                 <h1 class="text-lg font-bold flex items-center gap-2" dir="ltr">
-                    🏛️ SRRoot Panel
-                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v10.0.0</span>
+                    ⚡️ Z E U S
+                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">v1.5.10</span>
                 </h1>
                 <div class="flex items-center gap-3 bg-gray-100 dark:bg-zinc-800/60 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-800/80 shadow-sm flex-shrink-0 w-fit">
                     <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-all transform hover:scale-125 duration-200 flex-shrink-0" title="GitHub">
@@ -3348,7 +3074,7 @@ input[type="number"] {
                             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
                         </svg>
                     </a>
-                    <a href="https://t.me/srvpnshop" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 transition-all transform hover:scale-125 duration-200 flex-shrink-0" title="Telegram">
+                    <a href="https://t.me/SRRoot_Panel" target="_blank" rel="noopener noreferrer" class="text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 transition-all transform hover:scale-125 duration-200 flex-shrink-0" title="Telegram">
                         <svg class="w-[22px] h-[22px] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.94-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.37.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/>
                         </svg>
@@ -3365,124 +3091,214 @@ input[type="number"] {
                     </a>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="toggleSupportModal(true)" class="icon-btn" title="حمایت">
-                    <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <div class="flex items-center justify-center gap-3 w-full md:w-auto mt-2 md:mt-0">
+                <button onclick="toggleSupportModal(true)" 
+                        class="p-2 rounded-md 
+                               bg-red-50 dark:bg-red-950/30 
+                               border border-red-200 dark:border-red-900 
+                               hover:bg-red-100 dark:hover:bg-red-900/50 
+                               transition-all duration-200 
+                               text-red-600 dark:text-red-400 shadow-sm" 
+                        title="حمایت از ما">
+                    <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                     </svg>
                 </button>
-                <button onclick="restartCore()" class="icon-btn" title="ری‌استارت">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<button onclick="restartCore()"
+                        class="p-2 rounded-md 
+                               bg-blue-50 dark:bg-blue-950/30 
+                               border border-blue-200 dark:border-blue-900 
+                               hover:bg-blue-100 dark:hover:bg-blue-900/50 
+                               transition-all duration-200 
+                               text-blue-600 dark:text-blue-400 shadow-sm" 
+                        title="ری استارت پـنـل">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>
                 </button>
-                <button id="theme-toggle" class="icon-btn" title="تم">
-                    <svg id="sun-icon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="theme-toggle" 
+                        class="p-2 rounded-md 
+                               bg-amber-50 dark:bg-amber-950/30 
+                               border border-amber-200 dark:border-amber-900 
+                               hover:bg-amber-100 dark:hover:bg-amber-900/50 
+                               transition-all duration-200 
+                               text-amber-500 dark:text-amber-400 shadow-sm"
+                        title="تغییر تم">
+                    <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
-                    <svg id="moon-icon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                     </svg>
                 </button>
-                <button id="update-toggle" onclick="checkForUpdates(true)" class="icon-btn relative" title="آپدیت">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="update-toggle" onclick="checkForUpdates(true)" 
+                        class="p-2 rounded-md 
+                               bg-green-50 dark:bg-green-950/30 
+                               border border-green-200 dark:border-green-900 
+                               hover:bg-green-100 dark:hover:bg-green-900/50 
+                               transition-all duration-200 
+                               text-green-700 dark:text-green-500 
+                               relative shadow-sm" 
+                        title="آپدیت">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"></path>
                     </svg>
-                    <span id="update-badge" class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full hidden"></span>
+                    <span id="update-badge" class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-green-50 dark:border-green-900 rounded-full hidden animate-pulse"></span>
                 </button>
-                <button onclick="toggleSettingsModal(true)" class="icon-btn" title="تنظیمات">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="toggleSettingsModal(true)" 
+                        class="p-2 rounded-md 
+                               bg-gray-50 dark:bg-zinc-800/50 
+                               border border-gray-200 dark:border-zinc-700 
+                               hover:bg-gray-100 dark:hover:bg-zinc-700/80 
+                               transition-all duration-200 
+                               text-gray-600 dark:text-zinc-400 shadow-sm" 
+                        title="تنظیمات">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </button>
-                <button onclick="logoutAdmin()" class="icon-btn" title="خروج">
-                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button 
+                    onclick="logoutAdmin()" 
+                    class="p-2 rounded-md 
+                           bg-red-50 dark:bg-red-950/30 
+                           border border-red-200 dark:border-red-900 
+                           hover:bg-red-100 dark:hover:bg-red-900/50 
+                           transition-all duration-200 
+                           text-red-600 dark:text-red-400 
+                           shadow-sm hover:shadow-md"
+                    title="خروج">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
                 </button>
             </div>
         </div>
-
-
+    </header>
     <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="stat-clean">
-        <div class="stat-label">کل کاربران</div>
-        <div class="stat-value text-gray-900 dark:text-white" id="stat-total-users">0</div>
-    </div>
-    <div class="stat-clean">
-        <div class="stat-label">کاربران فعال (آنلاین)</div>
-        <div class="stat-value text-green-600 dark:text-green-400" id="stat-active-users">0</div>
-        <button type="button" onclick="openOnlineCounterWarning();" class="text-red-500 hover:text-red-400 text-xs mt-1 cursor-pointer inline-flex items-center gap-1" title="هشدار">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            <span>توجه</span>
-        </button>
-    </div>
-    <div class="stat-clean">
-        <div class="stat-label">ریکوئست‌های روزانه</div>
-        <div class="flex items-baseline gap-1">
-            <div class="stat-value text-orange-600 dark:text-orange-400" id="stat-cf-requests">0</div>
-            <span class="text-xs text-gray-400">/100k</span>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+    <div class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-indigo-400 dark:hover:border-indigo-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
+        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-indigo-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="flex items-center justify-between relative z-10">
+            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">تعداد کل کاربران</span>
+            <div class="p-1 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-md flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            </div>
         </div>
-        <button id="cf-warning-btn" onclick="openUsageWarning()" class="hidden text-red-500 text-xs mt-1">⚠️ هشدار</button>
-        <div class="progress-clean mt-2">
-            <div id="stat-cf-progress" class="progress-fill" style="width: 0%"></div>
+        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
+            <div class="text-lg font-black text-gray-900 dark:text-zinc-100 transition-all leading-none" id="stat-total-users">0</div>
+            <span class="text-[9px] text-indigo-500 dark:text-indigo-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none mb-0.5">
+                <span class="w-1 h-1 bg-indigo-500 rounded-full animate-ping"></span>
+                کل کاربران تعریف شده
+            </span>
         </div>
-        <div class="text-[10px] text-gray-400 mt-1">Total: <span id="stat-cf-total">0</span></div>
     </div>
-    <div class="stat-clean">
-        <div class="stat-label">ترافیک مصرفی</div>
-        <div class="stat-value text-blue-600 dark:text-blue-400" id="stat-total-usage">0 GB</div>
+    <div class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-green-400 dark:hover:border-green-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
+        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-green-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="flex items-center justify-between relative z-10">
+            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap flex items-center gap-1">
+                <span>کاربران فعال (آنلاین)</span>
+                <button type="button" onclick="openOnlineCounterWarning();" class="text-red-500 hover:text-red-400 transition-transform hover:scale-110 cursor-pointer inline-flex items-center" title="هشدار">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </button>
+            </span>
+            <div class="p-1 bg-green-50 dark:bg-green-950/30 text-green-600 dark:text-green-400 rounded-md flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+        </div>
+        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
+            <div class="text-lg font-black text-green-600 dark:text-green-400 transition-all leading-none" id="stat-active-users">0</div>
+            <span class="text-[9px] text-green-500 dark:text-green-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none mb-0.5">
+                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                متصل در این لحظه
+            </span>
+        </div>
+    </div>
+    <div id="card-cf-requests" class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-orange-400 dark:hover:border-orange-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
+        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-orange-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="flex items-center justify-between relative z-10">
+            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">ریکوئست‌های روزانه</span>
+            <div class="p-1 bg-orange-50 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400 rounded-md flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+            </div>
+        </div>
+        <div class="relative z-10 min-w-0 flex-1 w-full mt-0.5">
+            <div class="flex items-end justify-between w-full mb-1.5">
+                <div class="flex items-baseline gap-1">
+                    <span class="text-lg font-black text-orange-600 dark:text-orange-400 transition-all leading-none" id="stat-cf-requests">0</span>
+                    <span class="text-[9px] font-bold text-gray-400 mr-0.5 leading-none">/ 100k</span>
+                    <button id="cf-warning-btn" onclick="openUsageWarning()" class="hidden flex items-center justify-center w-3 h-3 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 rounded-full font-bold text-[9px] animate-bounce shadow-sm border border-red-300 dark:border-red-700 mr-1 leading-none">!</button>
+                </div>
+                <span class="text-[9px] text-orange-500 dark:text-orange-400 flex items-center gap-1 font-medium whitespace-nowrap leading-none">
+                    <span>Total: <span id="stat-cf-total">0</span></span>
+                </span>
+            </div>
+            <div class="w-full bg-gray-100 dark:bg-zinc-800 rounded-full h-1">
+                <div id="stat-cf-progress" class="bg-orange-500 h-1 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2.5 shadow-sm flex flex-col justify-center gap-1 hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500/50 transition duration-300 relative overflow-hidden group min-h-[64px]">
+        <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-blue-500/10 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+        <div class="flex items-center justify-between relative z-10">
+            <span class="text-[11px] sm:text-xs font-semibold text-gray-500 dark:text-zinc-400 whitespace-nowrap">ترافیک مصرفی سرور</span>
+            <div class="p-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-md flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            </div>
+        </div>
+        <div class="flex items-end justify-between relative z-10 w-full mt-0.5">
+            <div class="text-lg font-black text-blue-600 dark:text-blue-400 transition-all whitespace-nowrap leading-none" id="stat-total-usage">0 GB</div>
+            <span class="text-[9px] text-blue-500 dark:text-blue-400 flex items-center gap-0.5 font-medium whitespace-nowrap leading-none mb-0.5">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path></svg>
+                مجموع
+            </span>
+        </div>
     </div>
 </div>
         <div id="loading-state" class="text-center py-12">
-            <div class="inline-block w-10 h-10 border-3 border-gray-200 border-t-orange-500 rounded-full animate-spin"></div>
-            <p class="text-gray-500 dark:text-gray-400 mt-3 text-sm">در حال بارگذاری...</p>
+            <span class="text-gray-500 dark:text-gray-400">در حال بارگذاری کاربران...</span>
         </div>
-        <div class="card-clean mb-5">
-            <div class="flex flex-col md:flex-row gap-3">
-                <div class="flex-1 relative">
-                    <input type="text" id="search-input" oninput="filterAndRenderUsers()" placeholder="جستجوی نام کاربری یا UUID..." class="input-clean pr-10">
-                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+        <div class="mb-5 flex flex-col md:flex-row gap-2 justify-between items-center bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md p-2 shadow-sm">
+            <div class="relative w-full md:w-80">
+                <input type="text" id="search-input" oninput="filterAndRenderUsers()" placeholder="جستجوی نام کاربری یا UUID..." class="w-full pl-3 pr-8 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs">
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-gray-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <select id="filter-status" onchange="filterAndRenderUsers()" class="input-clean md:w-auto">
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <select id="filter-status" onchange="filterAndRenderUsers()" class="flex-1 min-w-0 px-2 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-zinc-300 cursor-pointer truncate">
                     <option value="all">🔍 همه</option>
-                    <option value="active">✅ فعال</option>
+					<option value="active">✅ فعال</option>
                     <option value="inactive">❌ غیرفعال</option>
                     <option value="online">⚡ آنلاین</option>
                     <option value="offline">💤 آفلاین</option>
                     <option value="expired">⏳ منقضی</option>
                 </select>
-                <select id="sort-users" onchange="filterAndRenderUsers()" class="input-clean md:w-auto">
+                <select id="sort-users" onchange="filterAndRenderUsers()" class="flex-1 min-w-0 px-2 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-zinc-300 cursor-pointer truncate">
                     <option value="newest">📅 جدیدترین</option>
-                    <option value="name">🔤 نام کاربری</option>
+                    <option value="name">🔤 نام کاربری (الفبا)</option>
                     <option value="usage-desc">📊 بیشترین مصرف</option>
                     <option value="usage-asc">📈 کمترین مصرف</option>
-                    <option value="expiry-asc">⏳ کمترین زمان</option>
+                    <option value="expiry-asc">⏳ کمترین زمان باقی‌مانده</option>
                 </select>
             </div>
         </div>
 		<div class="flex items-center justify-between mb-4">
 			<h2 class="text-lg font-bold text-gray-800 dark:text-zinc-200">لیست کاربران</h2>
 			<div class="flex items-center gap-2">
-				<button onclick="quickCreateUser(this)" title="افزودن سریع" class="btn-secondary flex items-center gap-2">
-					<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-					سریع
+				<button onclick="quickCreateUser(this)" title="افزودن کاربر سریع (VIP)" class="p-2 rounded-md bg-indigo-50 dark:bg-indigo-950/30 border-2 border-indigo-600 dark:border-indigo-700/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all duration-300 text-indigo-700 dark:text-indigo-400 shadow-sm hover:shadow hover:scale-110 cursor-pointer inline-flex items-center justify-center">
+					<svg id="quick-add-icon" class="w-6 h-6 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
 				</button>
-				<button onclick="openCreateModal()" title="افزودن کاربر" class="btn-primary flex items-center gap-2">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
-					کاربر جدید
+				<button onclick="openCreateModal()" title="افزودن کاربر" class="p-2 rounded-md bg-green-50 dark:bg-green-950/30 border-2 border-green-600 dark:border-green-700/60 hover:bg-green-100 dark:hover:bg-green-900/50 transition-all duration-300 text-green-700 dark:text-green-400 shadow-sm hover:shadow hover:scale-110 cursor-pointer inline-flex items-center justify-center">
+    				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
 				</button>
 			</div>
 		</div>
-        <div id="users-table-container" class="hidden table-clean overflow-hidden">
+        <div id="users-table-container" class="hidden overflow-x-auto border border-gray-200 dark:border-amoled-border rounded-md bg-white dark:bg-amoled-card">
             <table class="w-full text-right border-collapse">
                 <thead>
-                    <tr class="table-header">
-                        <th class="py-1 px-1.5 w-10 text-center"><input type="checkbox" id="select-all-users" onchange="toggleSelectAllUsers(this)" class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-zinc-700 text-emerald-600 bg-white dark:bg-zinc-800 checked:bg-emerald-600 checked:border-emerald-600 focus:ring-emerald-500/50 focus:ring-offset-0 transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95"></th>
+                    <tr class="bg-gray-100 dark:bg-zinc-900/50 border-b border-gray-200 dark:border-amoled-border text-xs text-gray-500 dark:text-gray-400 text-center leading-tight">
+                        <th class="py-1 px-1.5 w-10 text-center"><input type="checkbox" id="select-all-users" onchange="toggleSelectAllUsers(this)" class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-zinc-700 text-blue-600 bg-white dark:bg-zinc-800 checked:bg-blue-600 checked:border-blue-600 focus:ring-blue-500/50 focus:ring-offset-0 transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95"></th>
                         <th class="py-1 px-2 border-r border-gray-200 dark:border-zinc-800">اطلاعات</th>
                         <th class="py-1 px-2 border-r border-gray-200 dark:border-zinc-800">عملیات</th>
                         <th class="py-1 px-2 border-r border-gray-200 dark:border-zinc-800">لینک ساب</th>
@@ -3511,14 +3327,8 @@ input[type="number"] {
                 <tbody id="users-tbody" class="divide-y divide-gray-150 dark:divide-amoled-border text-sm"></tbody>
             </table>
         </div>
-        <div id="empty-state" class="hidden text-center py-16 card-clean">
-            <div class="inline-block p-4 bg-red-50 dark:bg-red-900/20 rounded-full mb-3">
-                <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
-            </div>
-            <p class="text-lg font-bold text-gray-900 dark:text-white">کاربری وجود ندارد</p>
-            <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">برای ساخت اولین کاربر روی دکمه «+» کلیک کنید</p>
+        <div id="empty-state" class="hidden p-8 border-2 border-dashed border-red-500/60 dark:border-red-500/50 bg-red-50 dark:bg-red-900/10 rounded-md text-center animate-pulse shadow-sm">
+            <p class="text-red-600 dark:text-red-400 font-bold text-lg">کاربری وجود ندارد. برای ساخت اولین کاربر روی دکمه « + » کلیک کنید یا از دکمه ⚡️ برای ایجاد سریع کاربر استفاده کنید.</p>
         </div>
     </main>
 <div id="usage-warning-modal" class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
@@ -3542,21 +3352,21 @@ input[type="number"] {
         </div>
         <h3 class="font-black text-xl text-gray-900 dark:text-white mb-2">🚨 🛑 اخطار 🛑 🚨</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed font-medium">
-این پـنـل <span class="text-red-500 font-bold">رایگان</span> است. هرگونه <span class="text-amber-500 font-bold">فروش پـنـل یا کـانفـیگ‌های آن</span>، و همچنین <span class="text-amber-500 font-bold">انتشار کـانفـیگ‌ها برای گرفتن ممبر و بازدید</span>، مصداق <span class="text-red-500 font-bold">کلاه‌برداری و رفتاری دور از انسانیت و شرافت</span> است. لطفاً از این ابزار <span class="text-green-500 font-bold">فقط به صورت شخصی و رایگان</span> استفاده کنید.        </p>
+این پـنـل کاملاً <span class="text-red-500 font-bold">رایگان</span> است. هرگونه <span class="text-amber-500 font-bold">فروش پـنـل یا کـانفـیگ‌های آن</span>، و همچنین <span class="text-amber-500 font-bold">انتشار کـانفـیگ‌ها برای گرفتن ممبر و بازدید</span>، مصداق <span class="text-red-500 font-bold">کلاه‌برداری و رفتاری دور از انسانیت و شرافت</span> است. لطفاً از این ابزار <span class="text-green-500 font-bold">فقط به صورت شخصی و رایگان</span> استفاده کنید.        </p>
         <button onclick="closeFreePanelWarning()" class="w-full py-3.5 bg-transparent border-2 border-green-800 text-green-900 hover:bg-green-800 hover:text-white dark:border-green-800 dark:text-green-700 dark:hover:bg-green-900 dark:hover:text-white font-black rounded-md text-sm transition duration-300 shadow-lg">
             تأیید و موافقت
         </button>
     </div>
 </div>
 <div id="global-message-modal" class="fixed inset-0 z-[86] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
-    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-emerald-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-500 mb-4 shadow-inner">
+    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-blue-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 mb-4 shadow-inner">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         </div>
         <h3 class="font-black text-xl text-gray-900 dark:text-white mb-4">پیام همگانی</h3>
         <div id="global-message-content" class="mb-6 w-full text-center">
         </div>
-        <button id="global-message-close-btn" class="w-full py-3.5 bg-transparent border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-900/20 hover:text-emerald-800 dark:border-emerald-500 dark:text-emerald-500 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-400 font-black rounded-md text-sm transition duration-300 shadow-lg">
+        <button id="global-message-close-btn" class="w-full py-3.5 bg-transparent border-2 border-blue-600 text-blue-700 hover:bg-blue-900/20 hover:text-blue-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-900/40 dark:hover:text-blue-400 font-black rounded-md text-sm transition duration-300 shadow-lg">
             متوجه شدم
         </button>
     </div>
@@ -3598,7 +3408,7 @@ input[type="number"] {
         <div id="user-modal-card" class="w-full max-w-xl lg:max-w-[1200px] bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl overflow-hidden transition-[opacity,transform] duration-200 opacity-0 scale-95 ease-out flex flex-col max-h-[90vh] transform-gpu" style="will-change: transform, opacity;">
             <div class="px-6 py-4 border-b border-gray-150 dark:border-amoled-border flex justify-between items-center bg-gray-50/50 dark:bg-amoled-bg">
                 <div class="flex items-center gap-2">
-                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
                     <h3 id="modal-title" class="font-bold text-gray-900 dark:text-zinc-100 text-base">ایجاد کاربر جدید</h3>
                 </div>
                 <button onclick="toggleModal(false)" class="p-1.5 rounded-md bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 shadow-sm">
@@ -3619,7 +3429,7 @@ input[type="number"] {
                                     <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                     </span>
-                                    <input type="text" id="input-name" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')" placeholder="Z_E_U_S" maxlength="32" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition" required>
+                                    <input type="text" id="input-name" oninput="this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '')" placeholder="Z_E_U_S" maxlength="32" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition" required>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2.5">
@@ -3629,7 +3439,7 @@ input[type="number"] {
                                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                                         </span>
-                                        <input type="number" id="input-limit" min="0" step="any" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
+                                        <input type="number" id="input-limit" min="0" step="any" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
                                     </div>
                                 </div>
                                 <div>
@@ -3638,7 +3448,7 @@ input[type="number"] {
                                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         </span>
-                                        <input type="number" id="input-expiry" min="0" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
+                                        <input type="number" id="input-expiry" min="0" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
                                     </div>
                                 </div>
                                 <div>
@@ -3647,7 +3457,7 @@ input[type="number"] {
                                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                                         </span>
-                                        <input type="number" id="input-req-limit" min="0" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
+                                        <input type="number" id="input-req-limit" min="0" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
                                     </div>
                                 </div>
                                 <div>
@@ -3661,7 +3471,7 @@ input[type="number"] {
                                         <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                                         </span>
-                                        <input type="number" id="input-ip-limit" min="0" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
+                                        <input type="number" id="input-ip-limit" min="0" placeholder="نامحدود" class="w-full pl-3 pr-9 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-semibold text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition">
                                     </div>
                                 </div>
                             </div>
@@ -3680,11 +3490,11 @@ input[type="number"] {
                             <div id="auto-reset-inputs-container" class="grid grid-cols-2 gap-2 transition-all duration-300 pt-2 border-t border-gray-100 dark:border-amoled-border opacity-50 pointer-events-none">
                                 <div>
                                     <label class="block text-[10px] font-bold text-gray-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">زمان تمدید حجم (روز)</label>
-                                    <input type="number" id="input-auto-reset-vol" min="1" placeholder="خالی = بدون تمدید" class="w-full px-2 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-mono text-center text-gray-800 dark:text-zinc-100 transition" dir="ltr" disabled>
+                                    <input type="number" id="input-auto-reset-vol" min="1" placeholder="خالی = بدون تمدید" class="w-full px-2 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-mono text-center text-gray-800 dark:text-zinc-100 transition" dir="ltr" disabled>
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-gray-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">زمان تمدید ریکوئست (روز)</label>
-                                    <input type="number" id="input-auto-reset-req" min="1" placeholder="خالی = بدون تمدید" class="w-full px-2 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-mono text-center text-gray-800 dark:text-zinc-100 transition" dir="ltr" disabled>
+                                    <input type="number" id="input-auto-reset-req" min="1" placeholder="خالی = بدون تمدید" class="w-full px-2 py-1.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-mono text-center text-gray-800 dark:text-zinc-100 transition" dir="ltr" disabled>
                                 </div>
                             </div>
                         </div>
@@ -3698,14 +3508,14 @@ input[type="number"] {
                                     </label>
                                 </div>
                                 <div id="frag-inputs-container" class="grid grid-cols-2 gap-1.5 transition-all duration-300">
-                                    <input type="text" id="input-frag-len" placeholder="Len" value="200-3000" dir="ltr" class="w-full px-1.5 py-1 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500 text-[10px] font-mono text-center text-gray-800 dark:text-zinc-100">
-                                    <input type="text" id="input-frag-int" placeholder="Int" value="1-2" dir="ltr" class="w-full px-1.5 py-1 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500 text-[10px] font-mono text-center text-gray-800 dark:text-zinc-100">
+                                    <input type="text" id="input-frag-len" placeholder="Len" value="200-3000" dir="ltr" class="w-full px-1.5 py-1 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-[10px] font-mono text-center text-gray-800 dark:text-zinc-100">
+                                    <input type="text" id="input-frag-int" placeholder="Int" value="1-2" dir="ltr" class="w-full px-1.5 py-1 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-[10px] font-mono text-center text-gray-800 dark:text-zinc-100">
                                 </div>
                             </div>
                             <div class="p-3 bg-gray-50 dark:bg-amoled-input border border-gray-200/60 dark:border-amoled-border rounded-md shadow-sm">
                                 <label class="block text-[10px] font-bold text-gray-500 dark:text-zinc-400 mb-1.5 uppercase tracking-wider">Fingerprint</label>
                                 <div class="relative">
-                                    <select id="fingerprint-select" class="w-full px-2 py-1.5 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-1 focus:ring-emerald-500 text-[10px] font-semibold text-gray-700 dark:text-zinc-300 cursor-pointer appearance-none">
+                                    <select id="fingerprint-select" class="w-full px-2 py-1.5 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-[10px] font-semibold text-gray-700 dark:text-zinc-300 cursor-pointer appearance-none">
                                         <option value="chrome">🌐 Chrome</option>
                                         <option value="firefox">🦊 Firefox</option>
                                         <option value="safari">🧭 Safari</option>
@@ -3745,8 +3555,8 @@ input[type="number"] {
                         <div class="grid grid-cols-2 gap-2 md:gap-4">
                             <div class="p-3 bg-gray-50 dark:bg-amoled-input border border-gray-200/60 dark:border-amoled-border rounded-md shadow-sm flex flex-col">
                                 <div class="flex items-center gap-1.5 mb-2">
-                                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 shadow-sm"></span>
-                                    <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">🔒TLS PORT</span>
+                                    <span class="flex h-2 w-2 rounded-full bg-blue-500 shadow-sm"></span>
+                                    <span class="text-[11px] font-bold text-blue-600 dark:text-blue-400">🔒TLS PORT</span>
                                 </div>
                                 <div class="grid grid-cols-3 gap-1.5 flex-1 content-start" id="tls-ports-list"></div>
                             </div>
@@ -3763,14 +3573,14 @@ input[type="number"] {
                                 <span class="flex h-2 w-2 rounded-full bg-green-600 shadow-sm"></span>
                                 <span class="text-[11px] font-bold text-green-700 dark:text-green-500">⚙️ پورت‌های دلخواه (با فاصله جدا کنید)</span>
                             </div>
-                            <input type="text" id="input-custom-ports" placeholder="8080 2096 5000" dir="ltr" class="w-full px-2 py-2 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-mono text-left text-gray-800 dark:text-zinc-100 transition">
+                            <input type="text" id="input-custom-ports" placeholder="8080 2096 5000" dir="ltr" class="w-full px-2 py-2 bg-white dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-mono text-left text-gray-800 dark:text-zinc-100 transition">
                         </div>
                         <div class="flex flex-col flex-1 mt-4 pt-4 border-t-2 border-gray-300 dark:border-amoled-border">
                             <div class="flex items-center justify-between mb-2">
                                 <label class="block text-xs font-bold text-gray-500 dark:text-zinc-400 uppercase tracking-wider">آیپی تمیز (توصیه میشود)</label>
                                 <button type="button" onclick="openIpSelectorModal()" class="px-2.5 py-1 bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/70 border border-amber-400 dark:border-amber-600 rounded-md text-xs font-bold transition-all">مخزن آیپی تمیز</button>
                             </div>
-                            <textarea id="input-ips" placeholder="104.16.0.1" class="w-full h-full min-h-[80px] flex-1 px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-xs font-mono text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition resize-none"></textarea>
+                            <textarea id="input-ips" placeholder="104.16.0.1" class="w-full h-full min-h-[80px] flex-1 px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-200 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-xs font-mono text-gray-800 dark:text-zinc-100 placeholder-gray-400/80 transition resize-none"></textarea>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2 pt-4 lg:pt-0 border-t-2 lg:border-t-0 border-gray-300 dark:border-amoled-border justify-between">
@@ -3784,7 +3594,7 @@ input[type="number"] {
                             </div>
                             <div class="mb-3 p-2 border-2 border-dashed border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-md text-[11px] font-bold leading-relaxed text-center w-full shadow-[0_0_15px_rgba(239,68,68,0.6)]" style="animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite, alertShake 2s infinite;">
                                 <style>@keyframes alertShake { 0%, 100% {transform: translateX(0);} 2%, 6%, 10% {transform: translateX(-3px);} 4%, 8%, 12% {transform: translateX(3px);} 14% {transform: translateX(0);} }</style>
-                                سایت‌هایی مثل <span class="text-emerald-600 dark:text-emerald-400 font-black">ChatGPT</span>، <span class="text-amber-600 dark:text-amber-400 font-black">Claude</span> و <span class="text-purple-600 dark:text-purple-400 font-black">Speedtest</span> پشت کلودفلر هستند؛ برای باز کردن این سایت‌ها حتماً باید <span class="text-emerald-600 dark:text-emerald-400 font-black">پـروکـسـی</span> تنظیم کنید.
+                                سایت‌هایی مثل <span class="text-emerald-600 dark:text-emerald-400 font-black">ChatGPT</span>، <span class="text-amber-600 dark:text-amber-400 font-black">Claude</span> و <span class="text-purple-600 dark:text-purple-400 font-black">Speedtest</span> پشت کلودفلر هستند؛ برای باز کردن این سایت‌ها حتماً باید <span class="text-blue-600 dark:text-blue-400 font-black">پـروکـسـی</span> تنظیم کنید.
                             </div>
                             <div class="relative transition-opacity duration-300 opacity-50 pointer-events-none flex-1 flex flex-col justify-start gap-2" id="user-socks5-container">
                                 <div id="proxies-fields-wrapper" class="flex flex-col gap-2 w-full"></div>
@@ -3806,8 +3616,8 @@ input[type="number"] {
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 mt-1 w-full">
-                                    
-                                    <a href="https://github.com/amirparsa1/SRRoot-Panel#%EF%B8%8F-build-your-own-socks5-proxy-srroot-relay" target="_blank" class="text-[11px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-2 py-2 rounded border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition font-black shadow-sm text-center whitespace-nowrap">ساخت پـروکـسـی شخصی</a>
+                                    <button type="button" onclick="toggleDonateModal(true)" class="text-[11px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 px-2 py-2 rounded border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition font-black shadow-sm text-center whitespace-nowrap">اهدای پـروکـسـی شخصی ❤️</button>
+                                    <a href="https://github.com/amirparsa1/SRRoot-Panel#%EF%B8%8F-build-your-own-socks5-proxy-srroot-relay" target="_blank" class="text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-2 rounded border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition font-black shadow-sm text-center whitespace-nowrap">ساخت پـروکـسـی شخصی</a>
                                 </div>
                             </div>
                         </div>
@@ -3835,13 +3645,13 @@ input[type="number"] {
             <div id="ip-selection-form" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium mb-1.5 text-gray-700 dark:text-zinc-300">اوپراتور</label>
-                    <select id="ip-operator-select" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-700 dark:text-zinc-300 cursor-pointer">
+                    <select id="ip-operator-select" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-zinc-300 cursor-pointer">
                         <option value="all">همه (توصیه شده)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-medium mb-1.5 text-gray-700 dark:text-zinc-300">تعداد</label>
-                    <input type="number" id="ip-count-input" min="1" value="20" dir="ltr" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-xs font-mono text-center">
+                    <input type="number" id="ip-count-input" min="1" value="20" dir="ltr" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs font-mono text-center">
                 </div>
                 <div class="flex flex-col gap-2 border-t border-gray-100 dark:border-zinc-800/60 pt-3 mt-2">
                     <div class="flex items-center justify-between">
@@ -3853,7 +3663,7 @@ input[type="number"] {
                     </div>
                     <div id="auto-rotate-ip-inputs-container" class="hidden transition-all duration-300 pt-1">
                         <label class="block text-[11px] font-bold text-gray-500 dark:text-zinc-400 mb-1">زمان تعویض (دقیقه)</label>
-                        <input type="number" id="input-auto-rotate-ip-time" min="1" placeholder="توصیه شده 5" onblur="if(this.value === '' || parseInt(this.value) < 1) this.value = '5';" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-xs font-mono text-center" dir="ltr">
+                        <input type="number" id="input-auto-rotate-ip-time" min="1" placeholder="توصیه شده 5" onblur="if(this.value === '' || parseInt(this.value) < 1) this.value = '5';" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs font-mono text-center" dir="ltr">
                     </div>
                 </div>
             </div>
@@ -3902,14 +3712,14 @@ input[type="number"] {
                 <p class="text-[10px] text-gray-500 dark:text-zinc-500 mb-3 leading-relaxed font-medium">
                     جستجو در منابع رایگان؛ به دلیل نیاز به تست کیفیت زمان‌بر است.
                 </p>
-                <div id="proxy-loading-state" class="text-center text-[11px] text-emerald-500 font-bold hidden my-3 whitespace-pre-line leading-relaxed">
+                <div id="proxy-loading-state" class="text-center text-[11px] text-blue-500 font-bold hidden my-3 whitespace-pre-line leading-relaxed">
                     در حال اسکن...
                 </div>
                 <div id="proxy-selection-form" class="flex flex-col gap-2">
-                    <select id="proxy-country-select" class="w-full px-3 py-2 bg-white dark:bg-amoled-input border border-gray-300 dark:border-zinc-700 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-700 dark:text-zinc-300 cursor-pointer">
+                    <select id="proxy-country-select" class="w-full px-3 py-2 bg-white dark:bg-amoled-input border border-gray-300 dark:border-zinc-700 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-zinc-300 cursor-pointer">
                         <option value="">در حال آماده‌سازی...</option>
                     </select>
-                    <button type="button" onclick="fetchAndLoadProxy()" id="proxy-fetch-btn" class="w-full py-2.5 bg-transparent border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-900/20 hover:text-emerald-800 dark:border-emerald-500 dark:text-emerald-500 dark:hover:bg-emerald-900/40 dark:hover:text-emerald-400 font-bold rounded-md text-xs transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <button type="button" onclick="fetchAndLoadProxy()" id="proxy-fetch-btn" class="w-full py-2.5 bg-transparent border-2 border-blue-600 text-blue-700 hover:bg-blue-900/20 hover:text-blue-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-900/40 dark:hover:text-blue-400 font-bold rounded-md text-xs transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" disabled>
 						شروع اسکن و یافتن پـروکـسـی
 					</button>
                 </div>
@@ -3920,7 +3730,30 @@ input[type="number"] {
         </div>
     </div>
 </div>
-
+<div id="donate-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
+    <div class="w-full max-w-sm bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl overflow-hidden transition-all transform duration-300 opacity-0 scale-95 ease-out" id="donate-modal-card">
+        <div class="px-6 py-4 border-b border-gray-150 dark:border-amoled-border flex justify-between items-center bg-gray-50 dark:bg-zinc-900/50">
+            <h3 class="font-bold text-gray-900 dark:text-zinc-100 text-sm">🎁 اهدای پـروکـسـی</h3>
+            <button type="button" onclick="toggleDonateModal(false)" class="p-1.5 rounded-md bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 shadow-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="p-6 space-y-4">
+            <p class="text-[11px] text-gray-600 dark:text-zinc-400 leading-relaxed font-medium">
+                اگر سرور دارید میتونید با دکمه <span class="text-blue-600 dark:text-blue-400 font-black">«ساخت پـروکـسـی شخصی»</span> یک پـروکـسـی بسازید و اهدا کنید به پروژه
+            </p>
+            <div>
+                <input type="text" id="donate-proxy-input" placeholder="user:pass@ip:port" dir="ltr" class="w-full px-3 py-2.5 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 text-xs font-mono text-left text-gray-900 dark:text-zinc-100 transition">
+            </div>
+            <div class="w-full text-center">
+                <span id="donate-result" class="inline-block mt-1 text-[11px] font-bold transition-colors break-words leading-relaxed empty:hidden"></span>
+            </div>
+            <div class="pt-2 flex gap-3">
+                <button type="button" onclick="toggleDonateModal(false)" class="flex-1 py-2 bg-transparent border-2 border-red-700 text-red-700 hover:bg-red-900/20 hover:text-red-800 dark:border-red-700 dark:text-red-500 dark:hover:bg-red-900/40 dark:hover:text-red-400 font-bold rounded-md text-xs transition shadow-sm">لغو</button>
+                <button type="button" id="donate-submit-btn" onclick="testAndDonateProxy()" class="flex-1 py-2 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-bold rounded-md text-xs transition shadow-sm">تست و اهدا</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="support-modal" class="fixed inset-0 z-[105] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
     <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-red-500/50 rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
@@ -3929,13 +3762,16 @@ input[type="number"] {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
         </div>
-        <h3 class="font-black text-xl text-gray-900 dark:text-white mb-3">SRRoot</h3>
+        <h3 class="font-black text-xl text-gray-900 dark:text-white mb-3">حمایت از زئــوس</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed font-medium">
-            این پروژه متن باز است. برای تضمین پایداری و ادامه مسیر توسعه، نیازمند  شما عزیزان هستم.  
+            این پروژه متن باز و رایگان است. برای تضمین پایداری و ادامه مسیر توسعه، نیازمند همراهی و حمایت شما عزیزان هستم. هرگونه حمایت شما، انگیزه من را برای ارائه امکانات بهتر دوچندان می‌کند. ❤️
         </p>
         <div class="space-y-3">
-            
-			<a href="https://t.me/boost/srvpnshop" target="_blank" class="w-full py-3 bg-transparent border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:border-emerald-500/60 dark:text-emerald-400 dark:hover:bg-emerald-500/10 font-bold rounded-md text-sm transition duration-300 shadow-sm flex items-center justify-center gap-2">
+            <a href="https://donatonion.ir-netlify.workers.dev/" target="_blank" class="w-full py-3 bg-transparent border-2 border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-orange-500/60 dark:text-orange-400 dark:hover:bg-orange-500/10 font-bold rounded-md text-sm transition duration-300 shadow-sm flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-.75-3.25h1.5v-1.5h-1.5v1.5zm0-3.5h1.5v-3h-1.5v3z"/></svg>
+                حمایت مالی (رمز ارز)
+            </a>
+			<a href="https://t.me/boost/SRRoot_Panel" target="_blank" class="w-full py-3 bg-transparent border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:border-blue-500/60 dark:text-blue-400 dark:hover:bg-blue-500/10 font-bold rounded-md text-sm transition duration-300 shadow-sm flex items-center justify-center gap-2">
 				<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
 				کانال تلگرام
 			</a>
@@ -3961,7 +3797,7 @@ input[type="number"] {
                 <div class="pt-2">
 					<label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-zinc-300">نرخ رفرش خودکار پـنـل</label>
                     <div class="relative">
-                        <select id="refresh-rate-select" onchange="changeRefreshRate(this.value)" class="w-full pl-8 pr-3 py-2.5 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-700 dark:text-zinc-200 cursor-pointer appearance-none">
+                        <select id="refresh-rate-select" onchange="changeRefreshRate(this.value)" class="w-full pl-8 pr-3 py-2.5 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-zinc-200 cursor-pointer appearance-none">
                             <option value="1000">۱ ثانیه</option>
                             <option value="2000">۲ ثانیه</option>
                             <option value="5000">۵ ثانیه</option>
@@ -3993,11 +3829,11 @@ input[type="number"] {
                     <div class="space-y-3">
                         <div>
                             <label class="block text-[11px] text-gray-500 dark:text-gray-400 font-medium mb-1">رمز عبور فعلی</label>
-                            <input type="password" id="change-pwd-current" class="w-full px-3 py-2 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-xs font-mono text-center">
+                            <input type="password" id="change-pwd-current" class="w-full px-3 py-2 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs font-mono text-center">
                         </div>
                         <div>
                             <label class="block text-[11px] text-gray-500 dark:text-gray-400 font-medium mb-1">رمز عبور جدید</label>
-                            <input type="password" id="change-pwd-new" class="w-full px-3 py-2 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-xs font-mono text-center">
+                            <input type="password" id="change-pwd-new" class="w-full px-3 py-2 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs font-mono text-center">
                         </div>
                         <button type="button" onclick="changeAdminPassword()" id="change-pwd-btn" class="w-full py-2 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-semibold rounded-md text-xs transition-all shadow-sm">تغییر رمز عبور</button>
                     </div>
@@ -4008,7 +3844,7 @@ input[type="number"] {
                         <button type="button" onclick="exportUsersBackup()" class="py-2.5 bg-transparent border-2 border-orange-500 text-orange-600 hover:bg-orange-50 dark:text-orange-400 dark:border-orange-500/60 dark:hover:bg-orange-500/10 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
                             📤 پشتیبان گیری
                         </button>
-                        <button type="button" onclick="triggerImportBackup()" class="py-2.5 bg-transparent border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:border-emerald-500/60 dark:hover:bg-emerald-500/10 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <button type="button" onclick="triggerImportBackup()" class="py-2.5 bg-transparent border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:border-blue-500/60 dark:hover:bg-blue-500/10 rounded-md text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
                             📥 بازیابی
                         </button>
                     </div>
@@ -4023,7 +3859,7 @@ input[type="number"] {
     </div>
 <div id="update-modal" class="fixed inset-0 z-[90] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 ease-out">
     <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-2xl overflow-hidden p-6 text-center transition-all transform duration-300 opacity-0 scale-95 ease-out">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-500 mb-4 shadow-inner">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 mb-4 shadow-inner">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
         </div>
         <h3 class="font-black text-xl text-gray-900 dark:text-white mb-2">بروزرسانی پـنـل</h3>
@@ -4100,7 +3936,7 @@ input[type="number"] {
 </div>
     <div id="bulk-actions-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[40] bg-white dark:bg-zinc-900/90 border border-gray-200 dark:border-zinc-800/80 px-6 py-4 rounded-md shadow-2xl flex flex-wrap items-center justify-between gap-4 w-[95%] max-w-4xl transition-all duration-300 transform translate-y-28 opacity-0 pointer-events-none backdrop-blur-md">
         <div class="flex items-center gap-2">
-            <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-sm shadow-emerald-500/50"></span>
+            <span class="w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-sm shadow-blue-500/50"></span>
             <span id="bulk-selected-count" class="text-sm font-bold text-gray-800 dark:text-zinc-200">۰ کاربر انتخاب شده</span>
         </div>
         <div class="flex flex-wrap gap-2 justify-end">
@@ -4110,7 +3946,7 @@ input[type="number"] {
             <button onclick="bulkToggleStatus(0)" class="px-3 py-1.5 bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 rounded-md text-xs font-bold transition border border-amber-200 dark:border-amber-900/50 flex items-center gap-1">
                 ❌ غیرفعال‌سازی
             </button>
-            <button onclick="bulkReset('volume')" class="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 rounded-md text-xs font-bold transition border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-1">
+            <button onclick="bulkReset('volume')" class="px-3 py-1.5 bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-md text-xs font-bold transition border border-blue-200 dark:border-blue-900/50 flex items-center gap-1">
                 📊 ریست حجم
             </button>
             <button onclick="bulkReset('req')" class="px-3 py-1.5 bg-sky-50 dark:bg-sky-950/20 text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/30 rounded-md text-xs font-bold transition border border-sky-200 dark:border-sky-900/50 flex items-center gap-1">
@@ -4152,7 +3988,7 @@ ${COMMON_TOAST_HTML}
     <script>
 		async function fetchWithFallbackUI(path, options = {}) {
 			const githubUrl = 'https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/' + path;
-			const staticUrl = 'https://raw.githubusercontent.com/amirparsa1/SRRoot-Panel/main/' + path;
+			const staticUrl = 'https://srroot-files.surge.sh/' + path;
 			try {
 				const res = await fetch(githubUrl, options);
 				if (res.ok) return res;
@@ -4360,9 +4196,9 @@ ${COMMON_TOAST_HTML}
                 const isCheckedDefault = port === '443' ? 'checked' : '';
                 return '<label class="relative cursor-pointer">' +
                     '<input type="checkbox" name="ports" value="' + port + '" ' + isCheckedDefault + ' class="peer sr-only">' +
-                    '<div class="flex items-center justify-center gap-1 px-1.5 py-1.5 border border-gray-200 dark:border-zinc-800/80 rounded-md text-[11px] font-semibold select-none transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-800/40 text-gray-700 dark:text-zinc-300 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-950/25 peer-checked:border-emerald-500 dark:peer-checked:border-emerald-500/70 peer-checked:text-emerald-600 dark:peer-checked:text-emerald-400 shadow-sm">' +
+                    '<div class="flex items-center justify-center gap-1 px-1.5 py-1.5 border border-gray-200 dark:border-zinc-800/80 rounded-md text-[11px] font-semibold select-none transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-800/40 text-gray-700 dark:text-zinc-300 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-950/25 peer-checked:border-blue-500 dark:peer-checked:border-blue-500/70 peer-checked:text-blue-600 dark:peer-checked:text-blue-400 shadow-sm">' +
                         '<span>' + port + '</span>' +
-                        '<svg class="w-3 h-3 hidden peer-checked:block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>' +
+                        '<svg class="w-3 h-3 hidden peer-checked:block text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>' +
                     '</div>' +
                 '</label>';
             }).join('');
@@ -4847,7 +4683,7 @@ ${COMMON_TOAST_HTML}
 					            '<span class="leading-none text-[12px] font-bold">∞</span>' +
 					        '</div>' +
 					        '<div class="w-full h-1.5 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">' +
-					            '<div class="w-full h-full bg-emerald-500 rounded-full transition-all duration-500"></div>' +
+					            '<div class="w-full h-full bg-blue-500 rounded-full transition-all duration-500"></div>' +
 					        '</div>' +
 					    '</div>';
 					}
@@ -4876,7 +4712,7 @@ ${COMMON_TOAST_HTML}
 					            '<span class="leading-none text-[12px] font-bold">∞</span>' +
 					        '</div>' +
 					        '<div class="w-full h-1.5 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">' +
-					            '<div class="w-full h-full bg-emerald-500 rounded-full transition-all duration-500"></div>' +
+					            '<div class="w-full h-full bg-blue-500 rounded-full transition-all duration-500"></div>' +
 					        '</div>' +
 					    '</div>';
 					}
@@ -4901,7 +4737,7 @@ ${COMMON_TOAST_HTML}
 					            '<span class="leading-none text-[12px] font-bold">∞</span>' +
 					        '</div>' +
 					        '<div class="w-full h-1.5 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">' +
-					            '<div class="w-full h-full bg-emerald-500 rounded-full transition-all duration-500"></div>' +
+					            '<div class="w-full h-full bg-blue-500 rounded-full transition-all duration-500"></div>' +
 					        '</div>' +
 					    '</div>';
 					}
@@ -4995,7 +4831,7 @@ ${COMMON_TOAST_HTML}
                     let configsCountHtml = '<span class="font-black text-base ' + configColorClass + '" dir="ltr">' + totalConfigs + '</span>';
                     return '<tr class="hover:bg-gray-50 dark:hover:bg-zinc-900/40 border-b border-gray-100 dark:border-zinc-800 last:border-0">' +
                             '<td class="p-1 border-r border-gray-100 dark:border-zinc-800 text-center select-none">' +
-                                '<input type="checkbox" name="select-user" value="' + encodeURIComponent(user.username) + '" onchange="onUserSelectChange(this)" ' + isChecked + ' class="w-4 h-4 rounded-md border-2 border-gray-300 dark:border-zinc-700 text-emerald-600 bg-white dark:bg-zinc-800 checked:bg-emerald-600 checked:border-emerald-600 focus:ring-emerald-500/50 focus:ring-offset-0 transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95">' +
+                                '<input type="checkbox" name="select-user" value="' + encodeURIComponent(user.username) + '" onchange="onUserSelectChange(this)" ' + isChecked + ' class="w-4 h-4 rounded-md border-2 border-gray-300 dark:border-zinc-700 text-blue-600 bg-white dark:bg-zinc-800 checked:bg-blue-600 checked:border-blue-600 focus:ring-blue-500/50 focus:ring-offset-0 transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95">' +
                             '</td>' +
                             '<td class="p-1 border-r border-gray-100 dark:border-zinc-800 text-center">' +
                                 '<div class="flex flex-col items-center justify-center gap-1.5 w-full max-w-[120px] mx-auto select-none">' +
@@ -5011,7 +4847,7 @@ ${COMMON_TOAST_HTML}
                             '</td>' +
                             '<td class="p-1.5 border-r border-gray-100 dark:border-zinc-800 text-center">' +
                                 '<div class="grid grid-cols-2 gap-1 w-max mx-auto">' +
-                                    '<button onclick="copyConfig(\\'' + encodeURIComponent(user.username) + '\\')" title="کپی کـانفـیگ" class="p-1 flex items-center justify-center bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded transition shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>' +
+                                    '<button onclick="copyConfig(\\'' + encodeURIComponent(user.username) + '\\')" title="کپی کـانفـیگ" class="p-1 flex items-center justify-center bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded transition shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg></button>' +
                                     '<button onclick="editUser(\\'' + encodeURIComponent(user.username) + '\\')" title="ویرایش" class="p-1 flex items-center justify-center bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-yellow-50 dark:hover:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded transition shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>' +
                                     '<button onclick="deleteUser(\\'' + encodeURIComponent(user.username) + '\\')" title="حذف" class="p-1 flex items-center justify-center bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-red-50 dark:hover:bg-red-950/20 text-red-600 dark:text-red-400 rounded transition shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>' +
                                     '<button onclick="toggleUserStatus(\\'' + encodeURIComponent(user.username) + '\\')" title="' + statusBtnTitle + '" class="p-1 flex items-center justify-center bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 ' + statusBtnColor + ' rounded transition shadow-sm">' + statusBtnIcon + '</button>' +
@@ -5019,7 +4855,7 @@ ${COMMON_TOAST_HTML}
                             '</td>' +
                             '<td class="p-1 border-r border-gray-100 dark:border-zinc-800">' +
 							    '<div class="flex flex-col gap-0.5 w-[90px] mx-auto">' +
-							        '<button onclick="copySubLink(\\'' + encodeURIComponent(user.username) + '\\')" class="w-full flex items-center justify-center gap-1 px-1 py-0.5 bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 hover:bg-violet-100 dark:hover:bg-violet-900/50 rounded text-[9px] font-bold transition border border-violet-200 dark:border-violet-800">' +
+							        '<button onclick="copySubLink(\\'' + encodeURIComponent(user.username) + '\\')" class="w-full flex items-center justify-center gap-1 px-1 py-0.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded text-[9px] font-bold transition border border-indigo-200 dark:border-indigo-800">' +
 							            '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>' +
 							            'ساب متنی' +
 							        '</button>' +
@@ -5042,7 +4878,7 @@ ${COMMON_TOAST_HTML}
 							            if (!p) return "";
 							            var isTls = tlsPorts.includes(p);
 							            var isNonTls = nonTlsPorts.includes(p);
-							            var colorClass = isTls ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' : 
+							            var colorClass = isTls ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' : 
 							                             isNonTls ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400' : 
 							                             'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
 							            return '<span class="inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-semibold rounded leading-none ' + colorClass + '">' + p + '</span>';
@@ -5216,7 +5052,7 @@ window.renderProxyFieldsUI = function() {
 	wrapper.innerHTML = "";
 	window.proxyFieldsData.forEach((val, idx) => {
 		const isFocused = idx === window.activeProxyIndex;
-		const borderClass = isFocused ? "ring-2 ring-emerald-500 border-emerald-500" : "border-gray-200 dark:border-amoled-border";
+		const borderClass = isFocused ? "ring-2 ring-blue-500 border-blue-500" : "border-gray-200 dark:border-amoled-border";
 		const row = document.createElement("div");
 		row.className = "flex flex-col gap-0.5 w-full";
 		const proxyStr = (val || "").trim();
@@ -5246,9 +5082,9 @@ window.setActiveProxyField = function(idx) {
         inputs.forEach((inp, i) => {
             if (i === idx) {
                 inp.classList.remove("border-gray-200", "dark:border-amoled-border");
-                inp.classList.add("ring-2", "ring-emerald-500", "border-emerald-500");
+                inp.classList.add("ring-2", "ring-blue-500", "border-blue-500");
             } else {
-                inp.classList.remove("ring-2", "ring-emerald-500", "border-emerald-500");
+                inp.classList.remove("ring-2", "ring-blue-500", "border-blue-500");
                 inp.classList.add("border-gray-200", "dark:border-amoled-border");
             }
         });
@@ -5420,10 +5256,10 @@ function setModalState(modalId, show) {
             }
             var ports = String(user.port || '443').split(',').map(function(p) { return p.trim(); }).filter(function(p) { return p.length > 0; });
             var fp = user.fingerprint || 'chrome';
-            const dynPath = encodeURIComponent("/stream/srvpnshop/" + (user.uuid ? user.uuid.split("-")[4] : "default"));
+            const dynPath = encodeURIComponent("/stream/SRRoot_Panel/" + (user.uuid ? user.uuid.split("-")[4] : "default"));
             const links = [];
 		const m1 = decodeURIComponent('%E2%9A%A0%EF%B8%8F%D9%BE%D9%86%D9%84%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%20%D9%88%20%D8%BA%DB%8C%D8%B1%20%D9%82%D8%A7%D8%A8%D9%84%20%D9%81%D8%B1%D9%88%D8%B4%E2%9A%A0%EF%B8%8F');
-		const m2 = decodeURIComponent('%F0%9F%9A%80%40srvpnshop%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80');
+		const m2 = decodeURIComponent('%F0%9F%9A%80%40SRRoot_Panel%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80');
 		links.push('vle' + 'ss://' + (user.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m1));
 		links.push('vle' + 'ss://' + (user.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m2));
             let remVol = "Unlimited";
@@ -5445,7 +5281,7 @@ function setModalState(modalId, show) {
             }
             const infoRemark = "📊 remaining | \u200E" + remVol + " | \u200E" + remTime + " | \u200E" + remReq;
             links.push('vle' + 'ss://' + (user.uuid || '') + '@' + host + ':80?path=' + dynPath + '&security=none&encryption=none&host=' + host + '&fp=' + fp + '&type=ws#' + encodeURIComponent(infoRemark));
-            const rawPath = "/stream/srvpnshop/" + (user.uuid ? user.uuid.split("-")[4] : "default");
+            const rawPath = "/stream/SRRoot_Panel/" + (user.uuid ? user.uuid.split("-")[4] : "default");
             let proxyList = [];
             try {
                 if (user.user_socks5 && user.user_socks5.trim().startsWith("[")) {
@@ -5997,7 +5833,7 @@ async function testUserSocksProxy() {
                 window.location.reload();
             }
         }
-const CURRENT_VERSION = '10.0.0';
+const CURRENT_VERSION = '1.10.4';
 const UPDATE_FIX = "constsCURRENT_VERSION='d.d.d'";
 		window.autoUpdateStatusCache = false;
 		async function checkAutoUpdateSetup() {
@@ -6538,7 +6374,106 @@ async function fetchAndLoadProxy() {
         fetchBtn.disabled = false;
     }
 }
-						function toggleSupportModal(show) {
+const WORKER_DONATE_URL = "https://si-491177.taile4bcbb.ts.net/donate";
+		function toggleDonateModal(show) {
+			setModalState('donate-modal', show);
+			if (!show) {
+				document.getElementById('donate-proxy-input').value = '';
+				const resultSpan = document.getElementById('donate-result');
+				if (resultSpan) {
+					resultSpan.innerText = '';
+					resultSpan.className = 'inline-block mt-1 text-[11px] font-bold transition-colors break-words leading-relaxed empty:hidden';
+				}
+			}
+		}
+		async function testAndDonateProxy() {
+			const proxyInput = document.getElementById('donate-proxy-input').value.trim();
+			const btn = document.getElementById('donate-submit-btn');
+			const resultSpan = document.getElementById('donate-result');
+			if (!proxyInput) {
+				resultSpan.innerText = 'لطفاً پـروکـسـی را وارد کنید!';
+				resultSpan.className = 'text-[11px] font-bold text-red-500 w-full mt-1';
+				return;
+			}
+			if (!proxyInput.includes('@') || !proxyInput.split('@')[0].includes(':')) {
+				resultSpan.innerText = '❌ پـروکـسـی باید دارای نام کاربری و رمز عبور باشد';
+				resultSpan.className = 'text-[11px] font-bold text-red-500 w-full mt-1 break-words';
+				return;
+			}
+			btn.disabled = true;
+			btn.innerText = 'صبر کنید...';
+			resultSpan.innerText = 'در حال تست با اسکنر پـنـل...';
+			resultSpan.className = 'text-[11px] font-bold text-emerald-500 w-full mt-1';
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 6000);
+			try {
+				const testRes = await fetch('/api/test-proxy', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ proxy: proxyInput }),
+					signal: controller.signal
+				});
+				clearTimeout(timeoutId);
+				const testData = await testRes.json();
+				if (!testRes.ok || !testData.success) {
+					throw new Error(testData.error || 'پـروکـسـی مسدود یا خاموش است');
+				}
+				resultSpan.innerText = 'در حال بررسی اختصاصی بودن پـروکـسـی...';
+				let protocol = "";
+				const protoMatch = proxyInput.match(/^(socks4|socks5|socks|http|https):\\/\\//i);
+				if (protoMatch) protocol = protoMatch[0];
+				const hostPort = proxyInput.substring(proxyInput.lastIndexOf('@') + 1);
+				const noAuthProxy = protocol + hostPort;
+				let isOpenProxy = false;
+				try {
+					const ctlNoAuth = new AbortController();
+					const tidNoAuth = setTimeout(() => ctlNoAuth.abort(), 4000);
+					const resNoAuth = await fetch('/api/test-proxy', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ proxy: noAuthProxy }),
+						signal: ctlNoAuth.signal
+					});
+					clearTimeout(tidNoAuth);
+					const dataNoAuth = await resNoAuth.json();
+					if (resNoAuth.ok && dataNoAuth.success) {
+						isOpenProxy = true;
+					}
+				} catch(e) {}
+				if (isOpenProxy) {
+					throw new Error('این پـروکـسـی عمومی و بدون رمز است (الکی یوزرنیم و پسورد نزن!)');
+				}
+				const countryCode = testData.country || 'UN';
+				resultSpan.innerText = 'پـروکـسـی سالم و اختصاصی است! در حال ارسال (' + countryCode + ')...';
+				const donateResponse = await fetch(WORKER_DONATE_URL, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						proxy: proxyInput,
+						country: countryCode
+					})
+				});
+				const donateData = await donateResponse.json();
+				if (donateData.success) {
+					resultSpan.innerText = '✅ ' + donateData.message;
+					resultSpan.className = 'text-[11px] font-bold text-green-600 w-full mt-1';
+					document.getElementById('donate-proxy-input').value = '';
+				} else {
+					resultSpan.innerText = '❌ خطا: ' + donateData.error;
+					resultSpan.className = 'text-[11px] font-bold text-red-500 w-full mt-1 break-words';
+				}
+			} catch (error) {
+				clearTimeout(timeoutId);
+				let errorMsg = error.message;
+				if (error.name === 'AbortError') errorMsg = 'تایم‌اوت در تست پـروکـسـی';
+				resultSpan.innerText = '❌ خطا: ' + errorMsg;
+				resultSpan.className = 'text-[11px] font-bold text-red-500 w-full mt-1 break-words';
+			} finally {
+				btn.disabled = false;
+				btn.innerText = 'تست و اهدا';
+			}
+		}
+		function toggleSupportModal(show) {
             const modal = document.getElementById('support-modal');
             const content = modal.firstElementChild;
             if (show) {
@@ -6552,7 +6487,8 @@ async function fetchAndLoadProxy() {
 window.addEventListener('click', (e) => {
     if (window._modalMouseDownTarget && window._modalMouseDownTarget !== e.target) return;
     if (e.target.id === 'proxy-selector-modal') toggleProxySelectorModal(false);
-	});
+	if (e.target.id === 'donate-modal') toggleDonateModal(false);
+});
     </script>
 </body>
 </html>`,
@@ -6575,14 +6511,14 @@ window.addEventListener('click', (e) => {
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex flex-col items-center py-12 px-4 overflow-x-hidden">
     <div class="w-full max-w-xl glass rounded-md shadow-2xl p-6 md:p-8 relative overflow-hidden">
-        <div class="absolute -left-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-12 -top-12 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -right-12 -bottom-12 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="text-center mb-8 relative z-10">
-            <div class="inline-flex items-center justify-center p-3 bg-emerald-950/60 border border-emerald-500 text-emerald-400 rounded-md mb-4 shadow-[0_0_15px_rgba(59,130,246,0.4)]">
-                <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <div class="inline-flex items-center justify-center p-3 bg-blue-950/60 border border-blue-500 text-blue-400 rounded-md mb-4 shadow-[0_0_15px_rgba(59,130,246,0.4)]">
+                <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </div>
-            <h1 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white mb-1">پنل SRRoot - وضعیت اشتراک</h1>
-            <p id="display-username" class="text-sm font-bold text-emerald-500 tracking-wide font-mono mb-2"></p>
+            <h1 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white mb-1">پـنـل زئــوس - وضعیت اشتراک</h1>
+            <p id="display-username" class="text-sm font-bold text-blue-500 tracking-wide font-mono mb-2"></p>
             <p id="display-flag" class="text-2xl font-bold tracking-wide mb-3" style="display:none;"></p>
             <div id="live-connections-badge" style="display: none !important;">
                 <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
@@ -6596,7 +6532,7 @@ window.addEventListener('click', (e) => {
             <div class="bg-white/40 dark:bg-zinc-900/30 border border-gray-200 dark:border-amoled-border rounded-md p-3 shadow-sm flex flex-col justify-between">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-[10px] font-semibold text-gray-600 dark:text-zinc-400 flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                         حجم مصرفی
                     </span>
                     <span id="volume-pct" class="text-[10px] font-bold text-gray-800 dark:text-zinc-200">۰٪</span>
@@ -6664,17 +6600,17 @@ window.addEventListener('click', (e) => {
                 دریافت کـانفـیگ و اشتراک‌ها
             </h2>
             <div class="space-y-3">
-                <button onclick="copyTextSub()" class="w-full flex justify-between items-center px-4 py-3 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border hover:border-violet-500 dark:hover:border-violet-500 rounded-md text-xs font-medium transition shadow-sm">
+                <button onclick="copyTextSub()" class="w-full flex justify-between items-center px-4 py-3 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border hover:border-indigo-500 dark:hover:border-indigo-500 rounded-md text-xs font-medium transition shadow-sm">
                     <span class="flex items-center gap-2">⛓️ کپی لینک ساب‌اسکریپشن متنی</span>
-                    <span class="text-violet-500">کپی</span>
+                    <span class="text-indigo-500">کپی</span>
                 </button>
 				<button onclick="showSubQr()" class="w-full flex justify-between items-center px-4 py-3 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border hover:border-amber-500 dark:hover:border-amber-500 rounded-md text-xs font-medium transition shadow-sm">
                     <span class="flex items-center gap-2">📱 دریافت کیوآر کد ساب</span>
                     <span class="text-amber-500">نمایش</span>
                 </button>
-                <button onclick="copyvIeesConfig()" class="w-full flex justify-between items-center px-4 py-3 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border hover:border-emerald-500 dark:hover:border-emerald-500 rounded-md text-xs font-medium transition shadow-sm">
+                <button onclick="copyvIeesConfig()" class="w-full flex justify-between items-center px-4 py-3 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border hover:border-blue-500 dark:hover:border-blue-500 rounded-md text-xs font-medium transition shadow-sm">
                     <span class="flex items-center gap-2">🚀 کپی کـانفـیگ vIees (مستقیم)</span>
-                    <span class="text-emerald-500">کپی</span>
+                    <span class="text-blue-500">کپی</span>
                 </button>
             </div>
         </div>
@@ -6701,16 +6637,16 @@ window.addEventListener('click', (e) => {
 					</div>
                 </div>
                 <!-- Windows -->
-                <div class="bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/30 rounded-md p-2.5">
-                    <div class="flex items-center gap-1.5 mb-2.5 text-emerald-700 dark:text-emerald-500 font-bold text-[11px]">
+                <div class="bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/30 rounded-md p-2.5">
+                    <div class="flex items-center gap-1.5 mb-2.5 text-blue-700 dark:text-blue-500 font-bold text-[11px]">
                         <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.801"/></svg>
                         ویندوز
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <a href="https://github.com/2dust/v2rayN/releases/latest/download/v2rayN-windows-64.zip" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-emerald-400 dark:hover:border-emerald-500 transition shadow-sm"><span>v2rayN</span><span class="text-emerald-500 text-[12px]">📥</span></a>
-                        <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-emerald-400 dark:hover:border-emerald-500 transition shadow-sm"><span>happ</span><span class="text-emerald-500 text-[12px]">📥</span></a>
-                        <a href="https://github.com/hiddify/hiddify-app/releases/latest/download/Hiddify-Windows-Setup-x64.exe" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-emerald-400 dark:hover:border-emerald-500 transition shadow-sm"><span>Hiddify</span><span class="text-emerald-500 text-[12px]">📥</span></a>
-						<a href="https://github.com/KaringX/karing/releases/latest" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-emerald-400 dark:hover:border-emerald-500 transition shadow-sm"><span>Karing</span><span class="text-emerald-500 text-[12px]">📥</span></a>
+                        <a href="https://github.com/2dust/v2rayN/releases/latest/download/v2rayN-windows-64.zip" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-blue-400 dark:hover:border-blue-500 transition shadow-sm"><span>v2rayN</span><span class="text-blue-500 text-[12px]">📥</span></a>
+                        <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-blue-400 dark:hover:border-blue-500 transition shadow-sm"><span>happ</span><span class="text-blue-500 text-[12px]">📥</span></a>
+                        <a href="https://github.com/hiddify/hiddify-app/releases/latest/download/Hiddify-Windows-Setup-x64.exe" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-blue-400 dark:hover:border-blue-500 transition shadow-sm"><span>Hiddify</span><span class="text-blue-500 text-[12px]">📥</span></a>
+						<a href="https://github.com/KaringX/karing/releases/latest" target="_blank" class="flex justify-between items-center bg-white dark:bg-amoled-card border border-gray-100 dark:border-zinc-800 px-2 py-1.5 rounded text-[10px] font-semibold text-gray-700 dark:text-zinc-300 hover:border-blue-400 dark:hover:border-blue-500 transition shadow-sm"><span>Karing</span><span class="text-blue-500 text-[12px]">📥</span></a>
                     </div>
                 </div>
                 <!-- iOS -->
@@ -6755,11 +6691,11 @@ window.addEventListener('click', (e) => {
             </svg>
             گیت‌هاب
         </a>
-        <a href="https://t.me/srvpnshop" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-full shadow-sm hover:shadow-md transition text-sm font-bold text-gray-700 dark:text-zinc-300 hover:text-sky-500 dark:hover:text-sky-400 group">
+        <a href="https://t.me/SRRoot_Panel" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-full shadow-sm hover:shadow-md transition text-sm font-bold text-gray-700 dark:text-zinc-300 hover:text-sky-500 dark:hover:text-sky-400 group">
             <svg class="w-5 h-5 text-sky-500 group-hover:scale-110 transition" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.94-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.37.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/>
             </svg>
-            srvpnshop@
+            SRRoot_Panel@
         </a>
     </div>
     <div class="flex flex-wrap items-center gap-3 sm:gap-4 justify-center">
@@ -6767,9 +6703,14 @@ window.addEventListener('click', (e) => {
             <svg class="w-5 h-5 text-amber-500 dark:text-amber-400 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
             </svg>
-            ساخت پـنـل SRRoot
+            ساخت رایگان پـنـل
         </a>
-        
+        <a href="https://donatonion.ir-netlify.workers.dev" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-full shadow-sm hover:shadow-md transition text-sm font-bold text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 group">
+            <svg class="w-5 h-5 text-red-500 dark:text-red-400 group-hover:scale-110 transition" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3 9.24 3 10.91 3.81 12 5.08 13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            دونیت
+        </a>
     </div>
 </div>
 ${COMMON_TOAST_HTML}
@@ -6790,10 +6731,10 @@ ${COMMON_TOAST_HTML}
 			}
 			var ports = String(u.port || '443').split(',').map(function(p) { return p.trim(); }).filter(function(p) { return p.length > 0; });
 			var fp = u.fingerprint || 'chrome';
-			const dynPath = encodeURIComponent("/stream/srvpnshop/" + (u.uuid ? u.uuid.split("-")[4] : "default"));
+			const dynPath = encodeURIComponent("/stream/SRRoot_Panel/" + (u.uuid ? u.uuid.split("-")[4] : "default"));
 			const links = [];
 			const m1 = decodeURIComponent('%E2%9A%A0%EF%B8%8F%D9%BE%D9%86%D9%84%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%20%D9%88%20%D8%BA%DB%8C%D8%B1%20%D9%82%D8%A7%D8%A8%D9%84%20%D9%81%D8%B1%D9%88%D8%B4%E2%9A%A0%EF%B8%8F');
-			const m2 = decodeURIComponent('%F0%9F%9A%80%40srvpnshop%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80');
+			const m2 = decodeURIComponent('%F0%9F%9A%80%40SRRoot_Panel%20%D8%B3%D8%A7%D8%AE%D8%AA%20%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86%F0%9F%9A%80');
 			links.push('vle' + 'ss://' + (u.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m1));
 			links.push('vle' + 'ss://' + (u.uuid || '') + '@0.0.0.0:1?encryption=none&security=none&type=ws&host=' + host + '&path=' + dynPath + '#' + encodeURIComponent(m2));
 			let remVol = "Unlimited";
@@ -6815,7 +6756,7 @@ ${COMMON_TOAST_HTML}
 			}
 			const infoRemark = "📊 remaining | \u200E" + remVol + " | \u200E" + remTime + " | \u200E" + remReq;
 			links.push('vle' + 'ss://' + (u.uuid || '') + '@' + host + ':80?path=' + dynPath + '&security=none&encryption=none&host=' + host + '&fp=' + fp + '&type=ws#' + encodeURIComponent(infoRemark));
-			const rawPath = "/stream/srvpnshop/" + (u.uuid ? u.uuid.split("-")[4] : "default");
+			const rawPath = "/stream/SRRoot_Panel/" + (u.uuid ? u.uuid.split("-")[4] : "default");
 			let proxyList = [];
 			try {
 				if (u.user_socks5 && u.user_socks5.trim().startsWith("[")) {
