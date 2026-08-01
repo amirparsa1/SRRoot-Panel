@@ -3309,7 +3309,7 @@ input[type="number"] { -moz-appearance: textfield; }
                 <button class="sr-menu-btn" onclick="srToggleSidebar()" title="منو">☰</button>
                 <h1 class="text-lg font-bold flex items-center gap-2" dir="ltr">
                     🏛️ SRRoot Panel
-                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v8.0.0</span>
+                    <span id="panel-version" class="text-xs px-2 py-0.5 font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full">v9.0.0</span>
                 </h1>
                 <div class="flex items-center gap-3 bg-gray-100 dark:bg-zinc-800/60 px-3 py-1.5 rounded-full border border-gray-200 dark:border-zinc-800/80 shadow-sm flex-shrink-0 w-fit">
                     <a href="https://github.com/amirparsa1/SRRoot-Panel" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 transition-all transform hover:scale-125 duration-200 flex-shrink-0" title="GitHub">
@@ -3334,135 +3334,45 @@ input[type="number"] { -moz-appearance: textfield; }
                     </a>
                 </div>
             </div>
-            <div class="flex items-center justify-center gap-3 w-full md:w-auto mt-2 md:mt-0">
-                <button onclick="toggleSupportModal(true)" 
-                        class="p-2 rounded-md 
-                               bg-red-50 dark:bg-red-950/30 
-                               border border-red-200 dark:border-red-900 
-                               hover:bg-red-100 dark:hover:bg-red-900/50 
-                               transition-all duration-200 
-                               text-red-600 dark:text-red-400 shadow-sm" 
-                        title="">
-                    <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSupportModal(true)" class="icon-btn" title="حمایت">
+                    <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
                 </button>
-				<button onclick="restartCore()"
-                        class="p-2 rounded-md 
-                               bg-emerald-50 dark:bg-emerald-950/30 
-                               border border-emerald-200 dark:border-emerald-900 
-                               hover:bg-emerald-100 dark:hover:bg-emerald-900/50 
-                               transition-all duration-200 
-                               text-emerald-600 dark:text-emerald-400 shadow-sm" 
-                        title="ری استارت پـنـل">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="restartCore()" class="icon-btn" title="ری‌استارت">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>
                 </button>
-                <button id="theme-toggle" 
-                        class="p-2 rounded-md 
-                               bg-amber-50 dark:bg-amber-950/30 
-                               border border-amber-200 dark:border-amber-900 
-                               hover:bg-amber-100 dark:hover:bg-amber-900/50 
-                               transition-all duration-200 
-                               text-amber-500 dark:text-amber-400 shadow-sm"
-                        title="تغییر تم">
-                    <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="theme-toggle" class="icon-btn" title="تم">
+                    <svg id="sun-icon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
-                    <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="moon-icon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                     </svg>
                 </button>
-                <button id="update-toggle" onclick="checkForUpdates(true)" 
-                        class="p-2 rounded-md 
-                               bg-green-50 dark:bg-green-950/30 
-                               border border-green-200 dark:border-green-900 
-                               hover:bg-green-100 dark:hover:bg-green-900/50 
-                               transition-all duration-200 
-                               text-green-700 dark:text-green-500 
-                               relative shadow-sm" 
-                        title="آپدیت">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="update-toggle" onclick="checkForUpdates(true)" class="icon-btn relative" title="آپدیت">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"></path>
                     </svg>
-                    <span id="update-badge" class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-green-50 dark:border-green-900 rounded-full hidden animate-pulse"></span>
+                    <span id="update-badge" class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full hidden"></span>
                 </button>
-                <button onclick="toggleSettingsModal(true)" 
-                        class="p-2 rounded-md 
-                               bg-gray-50 dark:bg-zinc-800/50 
-                               border border-gray-200 dark:border-zinc-700 
-                               hover:bg-gray-100 dark:hover:bg-zinc-700/80 
-                               transition-all duration-200 
-                               text-gray-600 dark:text-zinc-400 shadow-sm" 
-                        title="تنظیمات">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="toggleSettingsModal(true)" class="icon-btn" title="تنظیمات">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </button>
-                <button 
-                    onclick="logoutAdmin()" 
-                    class="p-2 rounded-md 
-                           bg-red-50 dark:bg-red-950/30 
-                           border border-red-200 dark:border-red-900 
-                           hover:bg-red-100 dark:hover:bg-red-900/50 
-                           transition-all duration-200 
-                           text-red-600 dark:text-red-400 
-                           shadow-sm hover:shadow-md"
-                    title="خروج">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="logoutAdmin()" class="icon-btn" title="خروج">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
                 </button>
             </div>
         </div>
 
-    <!-- Persian Sidebar -->
-    <div class="sr-sidebar-overlay" id="sr-overlay" onclick="srToggleSidebar()"></div>
-    <aside class="sr-sidebar" id="sr-sidebar">
-        <div class="sr-sidebar-header">
-            <div class="sr-sidebar-logo">
-                <div class="sr-sidebar-icon">🏛️</div>
-                <div>
-                    <div class="sr-sidebar-title">SRRoot Panel</div>
-                    <div class="sr-sidebar-sub">Persian Edition v6.0.0</div>
-                </div>
-            </div>
-        </div>
-        <nav class="sr-nav">
-            <a class="sr-nav-item active" onclick="srNavClick(this, 'dashboard')">
-                <span class="sr-nav-icon">📊</span> داشبورد
-            </a>
-            <a class="sr-nav-item" onclick="srNavClick(this, 'users')">
-                <span class="sr-nav-icon">👥</span> کاربران
-            </a>
-            <a class="sr-nav-item" onclick="openCreateModal()">
-                <span class="sr-nav-icon">➕</span> افزودن کاربر
-            </a>
-            <a class="sr-nav-item" onclick="srNavClick(this, 'settings')">
-                <span class="sr-nav-icon">⚙️</span> تنظیمات
-            </a>
-            <a class="sr-nav-item" onclick="toggleSettingsModal(true)">
-                <span class="sr-nav-icon">🎨</span> تم و ظاهر
-            </a>
-        </nav>
-        <div class="sr-sidebar-footer">
-            <div>🏛️ SRRoot Panel</div>
-            <div>الهام از تخت جمشید</div>
-        </div>
-    </aside>
-    <script>
-    function srToggleSidebar() {
-        document.getElementById('sr-sidebar').classList.toggle('open');
-        document.getElementById('sr-overlay').classList.toggle('open');
-    }
-    function srNavClick(el, section) {
-        document.querySelectorAll('.sr-nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-        if (window.innerWidth < 1024) srToggleSidebar();
-    }
-    </script>
 
     <main class="max-w-6xl mx-auto px-4 py-8 pb-56 md:pb-32 sr-main-offset">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -6105,7 +6015,7 @@ async function testUserSocksProxy() {
                 window.location.reload();
             }
         }
-const CURRENT_VERSION = '8.0.0';
+const CURRENT_VERSION = '9.0.0';
 const UPDATE_FIX = "constsCURRENT_VERSION='d.d.d'";
 		window.autoUpdateStatusCache = false;
 		async function checkAutoUpdateSetup() {
